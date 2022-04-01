@@ -1,6 +1,7 @@
 package com.femaaccu.cryotechapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +35,7 @@ public class CurrencyRVAdapter extends RecyclerView.Adapter<CurrencyRVAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull CurrencyRVAdapter.ViewHolder holder, int position) {
         CurrencyRVModal currencyRVModal = currencyRVModalArrayList.get(position);
-        holder.currencyNameTV.setText(currencyRVModal.getName());
+        holder.currencyName.setText(currencyRVModal.getName());
         holder.symbolTV.setText(currencyRVModal.getSymbol());
         holder.rateTV.setText("$"+df2.format(currencyRVModal.getPrice()));
     }
@@ -45,12 +46,25 @@ public class CurrencyRVAdapter extends RecyclerView.Adapter<CurrencyRVAdapter.Vi
     }
 
     public class ViewHolder  extends RecyclerView.ViewHolder{
-        private TextView currencyNameTV, symbolTV, rateTV;
+        private TextView currencyName, symbolTV, rateTV;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            currencyNameTV = itemView.findViewById(R.id.IDTVCurrencyName);
+            currencyName = itemView.findViewById(R.id.IDTVCurrencyName);
             symbolTV = itemView.findViewById(R.id.idTVSymbol);
             rateTV= itemView.findViewById(R.id.IDTVCurrencyRate);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int[] images = {-1, -1};
+                    Intent intent = new Intent(context, ItemDetails.class);
+
+                    //enviamos la información al layout del controlador y lo iniciamos mediante un intent
+                    intent.putExtra("currencyName", currencyName.getText());
+                    intent.putExtra("imagenes", images);
+                    context.startActivity(intent);
+                }
+            });
 
         }
     }
