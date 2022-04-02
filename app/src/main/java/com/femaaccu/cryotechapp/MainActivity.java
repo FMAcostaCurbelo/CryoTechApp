@@ -17,6 +17,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -85,29 +86,28 @@ public class MainActivity extends AppCompatActivity {
     }
     private void getCurrencyData(){
         loadingPB.setVisibility(View.VISIBLE);
-        String url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest";
+        String url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false";
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+        JsonArrayRequest getRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
-            public void onResponse(JSONObject response) {
+            public void onResponse(JSONArray response) {
                 loadingPB.setVisibility(View.GONE);
                 try {
-                    JSONArray dataArray = response.getJSONArray("data");
-                    for(int i=0; i<dataArray.length(); i++){
-                        JSONObject dataObj = dataArray.getJSONObject(i);
+
+                    for(int i=0; i<response.length(); i++){
+                        JSONObject dataObj = response.getJSONObject(i);
+                        String id = dataObj.getString("id");
                         String name = dataObj.getString("name");
                         String symbol = dataObj.getString("symbol");
-
-                        JSONObject quote = dataObj.getJSONObject("quote");
-                        JSONObject USD = quote.getJSONObject("USD");
-                        double price = USD.getDouble("price");
-                        currencyRVModalArrayList.add(new CurrencyRVModal(name, symbol, price));
+                        double price = dataObj.getDouble("current_price");
+                        currencyRVModalArrayList.add(new CurrencyRVModal(name, symbol, price, id));
                     }
                     currencyRVAdapter.notifyDataSetChanged();
+
                 }
                 catch(JSONException e){
                         e.printStackTrace();
-                        Toast.makeText(MainActivity.this, "Fail to exctract JSON data... "+e, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Fail to exctract JSON data... "+e, Toast.LENGTH_LONG).show();
                     }
 
                 }
@@ -120,13 +120,8 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }){
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<>();
-                headers.put("X-CMC_PRO_API_KEY","4a17471c-3eb3-4260-803c-71d8fd3b8777");
-                return headers;
-            }
+
         };
-        requestQueue.add(jsonObjectRequest);
+        requestQueue.add(getRequest);
     }
 }

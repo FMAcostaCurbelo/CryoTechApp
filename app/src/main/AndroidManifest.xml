@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CryoTechApp">
         <activity
-            android:name=".ItemDetails2"
+            android:name=".ItemDetails"
             android:exported="false" />
         <activity
             android:name=".ItemDetails"

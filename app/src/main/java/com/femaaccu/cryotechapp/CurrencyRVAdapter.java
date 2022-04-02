@@ -38,6 +38,7 @@ public class CurrencyRVAdapter extends RecyclerView.Adapter<CurrencyRVAdapter.Vi
         holder.currencyName.setText(currencyRVModal.getName());
         holder.symbolTV.setText(currencyRVModal.getSymbol());
         holder.rateTV.setText("$"+df2.format(currencyRVModal.getPrice()));
+        holder.currencyId = currencyRVModal.getId();
     }
 
     @Override
@@ -47,6 +48,7 @@ public class CurrencyRVAdapter extends RecyclerView.Adapter<CurrencyRVAdapter.Vi
 
     public class ViewHolder  extends RecyclerView.ViewHolder{
         private TextView currencyName, symbolTV, rateTV;
+        private String currencyId;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             currencyName = itemView.findViewById(R.id.IDTVCurrencyName);
@@ -57,10 +59,11 @@ public class CurrencyRVAdapter extends RecyclerView.Adapter<CurrencyRVAdapter.Vi
                 @Override
                 public void onClick(View v) {
                    // int[] images = {-1, -1};
-                    Intent intent = new Intent(context, ItemDetails2.class);
+                    Intent intent = new Intent(context, ItemDetails.class);
 
                     //enviamos la información al layout del controlador y lo iniciamos mediante un intent
                     intent.putExtra("currencyName", currencyName.getText());
+                    intent.putExtra("currencyId", currencyId);
                     //intent.putExtra("imagenes", images);
                     context.startActivity(intent);
                 }
