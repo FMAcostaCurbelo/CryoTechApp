@@ -56,12 +56,12 @@ public class CurrencyRVAdapter extends RecyclerView.Adapter<CurrencyRVAdapter.Vi
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int[] images = {-1, -1};
-                    Intent intent = new Intent(context, ItemDetails.class);
+                   // int[] images = {-1, -1};
+                    Intent intent = new Intent(context, ItemDetails2.class);
 
                     //enviamos la información al layout del controlador y lo iniciamos mediante un intent
                     intent.putExtra("currencyName", currencyName.getText());
-                    intent.putExtra("imagenes", images);
+                    //intent.putExtra("imagenes", images);
                     context.startActivity(intent);
                 }
             });

@@ -3,29 +3,24 @@ package com.femaaccu.cryotechapp
 import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
-import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.android.volley.AuthFailureError
-import com.android.volley.Response
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
+import com.android.volley.*
+import com.android.volley.Request.*
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.CandleData
 import com.github.mikephil.charting.data.CandleDataSet
 import com.github.mikephil.charting.data.CandleEntry
+import com.loopj.android.http.*
 import kotlinx.android.synthetic.main.activity_item_details.*
-import org.json.JSONException
-import java.net.URL
-
+import java.net.*
 class ItemDetails : AppCompatActivity() {
+    private var requestQueue: RequestQueue? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_item_details)
 
         //le damos forma al binding
-
 
         //declaramos los extras para pode rrecoger la información del viewHolder
         val extras = intent.extras
@@ -34,11 +29,11 @@ class ItemDetails : AppCompatActivity() {
         if (currencyName != null) {
             setCandleStickChart(currencyName)
         }
+
     }
     fun setCandleStickChart(currencyName: String){
 
-        var url = "https://api.coingecko.com/api/v3/coins/bitcoin/ohlc?vs_currency=eur&days=1"
-
+        var urL = "https://api.coingecko.com/api/v3/coins/bitcoin/ohlc?vs_currency=eur&days=1"
 
                     val xvalue = ArrayList<String>()
                     xvalue.add("00:00")
