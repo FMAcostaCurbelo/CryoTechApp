@@ -5,10 +5,13 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -37,8 +40,16 @@ public class CurrencyRVAdapter extends RecyclerView.Adapter<CurrencyRVAdapter.Vi
         CurrencyRVModal currencyRVModal = currencyRVModalArrayList.get(position);
         holder.currencyName.setText(currencyRVModal.getName());
         holder.symbolTV.setText(currencyRVModal.getSymbol());
-        holder.rateTV.setText("$"+df2.format(currencyRVModal.getPrice()));
+        holder.price.setText("$"+df2.format(currencyRVModal.getPrice()));
         holder.currencyId = currencyRVModal.getId();
+        double rate = currencyRVModal.getRate();
+        holder.rateTV.setText("%"+df2.format(currencyRVModal.getRate()));
+        if (rate >= 0){
+            holder.arrow.setImageResource(R.drawable.greena12);
+        }else{
+            holder.arrow.setImageResource(R.drawable.reda12);
+        }
+        Picasso.get().load(currencyRVModal.getImage()).into(holder.imagen);
     }
 
     @Override
@@ -47,14 +58,17 @@ public class CurrencyRVAdapter extends RecyclerView.Adapter<CurrencyRVAdapter.Vi
     }
 
     public class ViewHolder  extends RecyclerView.ViewHolder{
-        private TextView currencyName, symbolTV, rateTV;
+        private TextView currencyName, symbolTV, rateTV, price;
+        private ImageView imagen, arrow;
         private String currencyId;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             currencyName = itemView.findViewById(R.id.IDTVCurrencyName);
             symbolTV = itemView.findViewById(R.id.idTVSymbol);
-            rateTV= itemView.findViewById(R.id.IDTVCurrencyRate);
-
+            price = itemView.findViewById(R.id.IDTVCurrencyPrice);
+            imagen = itemView.findViewById(R.id.IDImagenView);
+            rateTV = itemView.findViewById(R.id.IDCurrencyRate);
+            arrow = itemView.findViewById(R.id.IDarrow);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

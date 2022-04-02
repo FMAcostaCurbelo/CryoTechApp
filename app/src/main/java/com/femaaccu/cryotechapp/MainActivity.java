@@ -97,10 +97,12 @@ public class MainActivity extends AppCompatActivity {
                     for(int i=0; i<response.length(); i++){
                         JSONObject dataObj = response.getJSONObject(i);
                         String id = dataObj.getString("id");
+                        String image = dataObj.getString("image");
                         String name = dataObj.getString("name");
                         String symbol = dataObj.getString("symbol");
+                        double rate = dataObj.getDouble("price_change_percentage_24h");
                         double price = dataObj.getDouble("current_price");
-                        currencyRVModalArrayList.add(new CurrencyRVModal(name, symbol, price, id));
+                        currencyRVModalArrayList.add(new CurrencyRVModal(name, symbol, price, id, image, rate));
                     }
                     currencyRVAdapter.notifyDataSetChanged();
 

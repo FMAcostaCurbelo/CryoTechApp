@@ -9,32 +9,46 @@
     android:layout_margin="5dp">
 
     <RelativeLayout
+        android:id="@+id/idRLCurrency"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/idRLCurrency">
+        android:layout_height="71dp">
+
+        <ImageView
+            android:id="@+id/IDImagenView"
+            android:layout_width="59dp"
+            android:layout_height="52dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="-80dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="224dp"
+            android:layout_marginBottom="9dp"
+            android:layout_toEndOf="@+id/IDTVCurrencyName" />
 
         <TextView
+            android:id="@+id/idTVSymbol"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/idTVSymbol"
-            android:layout_toLeftOf="@id/IDTVCurrencyRate"
-            android:layout_margin="2dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_toLeftOf="@id/IDTVCurrencyPrice"
             android:padding="3dp"
             android:text="Symbol"
             android:textColor="@color/white"
             android:textStyle="bold">
 
-
-
         </TextView>
 
         <TextView
             android:id="@+id/IDTVCurrencyName"
-            android:layout_width="match_parent"
+            android:layout_width="206dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/idTVSymbol"
             android:layout_marginStart="2dp"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="11dp"
             android:layout_marginEnd="2dp"
             android:layout_marginBottom="2dp"
             android:padding="3dp"
@@ -42,7 +56,7 @@
             android:textColor="@color/white" />
 
         <TextView
-            android:id="@+id/IDTVCurrencyRate"
+            android:id="@+id/IDTVCurrencyPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -50,11 +64,35 @@
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
             android:padding="3dp"
+            android:text="Price"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/IDCurrencyRate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/IDTVCurrencyPrice"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="14dp"
+            android:layout_marginRight="2dp"
+            android:padding="3dp"
             android:text="Rate"
             android:textColor="@color/white" />
 
-
-
+        <ImageView
+            android:id="@+id/IDarrow"
+            android:layout_width="61dp"
+            android:layout_height="43dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="91dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="4dp"
+            android:layout_toStartOf="@+id/IDCurrencyRate"
+            android:layout_toEndOf="@+id/IDTVCurrencyName"
+            android:scaleType="fitXY" />
 
 
     </RelativeLayout>
