@@ -45,9 +45,9 @@ public class CurrencyRVAdapter extends RecyclerView.Adapter<CurrencyRVAdapter.Vi
         double rate = currencyRVModal.getRate();
         holder.rateTV.setText("%"+df2.format(currencyRVModal.getRate()));
         if (rate >= 0){
-            holder.arrow.setImageResource(R.drawable.greena12);
+            holder.arrow.setImageResource(R.drawable.greenarrow);
         }else{
-            holder.arrow.setImageResource(R.drawable.reda12);
+            holder.arrow.setImageResource(R.drawable.redarrowdown);
         }
         Picasso.get().load(currencyRVModal.getImage()).into(holder.imagen);
     }

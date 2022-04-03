@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
     }
     private void getCurrencyData(){
         loadingPB.setVisibility(View.VISIBLE);
-        String url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false";
+        String url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&order=market_cap_desc&per_page=100&page=1&sparkline=false";
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         JsonArrayRequest getRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
