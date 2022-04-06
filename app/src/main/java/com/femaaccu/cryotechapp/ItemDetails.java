@@ -2,10 +2,14 @@ package com.femaaccu.cryotechapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.NotificationManager;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -30,6 +34,7 @@ import java.util.Date;
 public class ItemDetails extends AppCompatActivity {
     private ActivityItemDetailsBinding binding;
     Bundle extras;
+    Button bDay, bWeek, bMonth, bYear, bMax;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,14 +48,63 @@ public class ItemDetails extends AppCompatActivity {
 
 
         String currencyId = extras.getString("currencyId");
-        setCandleStickChart(currencyId);
+
+
+
+        bDay = binding.buttonChartDay;
+        bWeek = binding.buttonChartWeek;
+        bMonth = binding.buttonChartMonth;
+        bYear = binding.buttonChartYear;
+        bMax = binding.buttonChartMax;
+
+        setCandleStickChart(currencyId, "1");
+
+        bDay.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                setCandleStickChart(currencyId, "1");
+
+            }
+        });
+        bWeek.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                setCandleStickChart(currencyId, "7");
+
+            }
+        });
+        bMonth.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+
+                setCandleStickChart(currencyId, "30");
+            }
+        });
+        bYear.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+
+                setCandleStickChart(currencyId, "365");
+            }
+        });
+        bMax.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+
+                setCandleStickChart(currencyId, "max");
+            }
+        });
+
+
+
 
     }
 
-    public void setCandleStickChart(String currencyID){
+
+    public void setCandleStickChart(String currencyID, String days){
 
 
-        String url = "https://api.coingecko.com/api/v3/coins/"+currencyID+"/ohlc?vs_currency=eur&days=1";
+        String url = "https://api.coingecko.com/api/v3/coins/"+currencyID+"/ohlc?vs_currency=eur&days="+days;
 
         RequestQueue queue = Volley.newRequestQueue(this);
 
@@ -79,7 +133,30 @@ public class ItemDetails extends AppCompatActivity {
                                 float floatHigh = Float.parseFloat(high);
                                 float floatLow = Float.parseFloat(low);
                                 float floatClose = Float.parseFloat(close);
-                                xvalue.add(""+time.getHours()+":"+time.getMinutes());
+
+                                switch (days){
+                                    case "1":
+                                        xvalue.add(""+time.getHours()+":"+time.getMinutes());
+                                        break;
+                                    case "7":
+                                        xvalue.add(""+time.getDay()+":"+time.getHours());
+                                        break;
+                                    case "30":
+                                        xvalue.add(""+time.getDay());
+                                        break;
+                                    case "365":
+                                        xvalue.add(""+time.getMonth());
+                                        break;
+                                    case "max":
+                                        xvalue.add(""+time.getYear());
+                                        break;
+                                    default:
+                                        xvalue.add("error");
+                                        break;
+                                }
+
+
+
                                 candlestickentry.add(new CandleEntry(i, floatHigh, floatLow, floatOpen, floatClose));
 
                             } catch (JSONException e) {
@@ -124,7 +201,8 @@ public class ItemDetails extends AppCompatActivity {
         );
              // add it to the RequestQueue
             queue.add(getRequest);
-
     }
+
+
 
 }

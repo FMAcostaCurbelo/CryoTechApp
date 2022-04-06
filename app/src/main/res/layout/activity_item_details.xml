@@ -20,4 +20,62 @@
 
     </com.github.mikephil.charting.charts.CandleStickChart>
 
+    <Button
+        android:id="@+id/buttonChartDay"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="133dp"
+        android:text="Day"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonChartWeek"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/candlechart" />
+
+    <Button
+        android:id="@+id/buttonChartWeek"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:text="1W"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonChartDay"
+        app:layout_constraintEnd_toStartOf="@+id/buttonChartMonth"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/buttonChartDay"
+        app:layout_constraintTop_toTopOf="@+id/buttonChartDay" />
+
+    <Button
+        android:id="@+id/buttonChartMonth"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:text="1M"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonChartWeek"
+        app:layout_constraintEnd_toStartOf="@+id/buttonChartYear"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/buttonChartWeek"
+        app:layout_constraintTop_toTopOf="@+id/buttonChartWeek" />
+
+    <Button
+        android:id="@+id/buttonChartYear"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:text="1Y"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonChartMonth"
+        app:layout_constraintEnd_toStartOf="@+id/buttonChartMax"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/buttonChartMonth"
+        app:layout_constraintTop_toTopOf="@+id/buttonChartMonth" />
+
+    <Button
+        android:id="@+id/buttonChartMax"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:text="Max"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonChartYear"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/buttonChartYear"
+        app:layout_constraintTop_toTopOf="@+id/buttonChartYear"
+        app:layout_constraintVertical_bias="0.0" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

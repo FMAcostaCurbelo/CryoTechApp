@@ -6,18 +6,21 @@
     android:layout_height="match_parent"
     android:background="@color/black_shade_1"
     tools:context=".MainActivity">
+    <include
+        layout="@layout/toolbar"
+        android:id="@+id/mytoolbar"
 
+        />
     <EditText
         android:id="@+id/IDEdtSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp"
+        android:layout_margin="5dp"
+        android:layout_below="@id/mytoolbar"
         android:hint="Crypto Currency search"
         android:textColor="@color/white"
         android:textColorHint="@color/white" />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"

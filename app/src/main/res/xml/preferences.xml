@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Preferences Setting\n">
+
+    <ListPreference
+        android:defaultValue="eur"
+        android:dialogTitle="Select EUR/USD"
+        android:entries="@array/settings_list_preference_local_currency"
+        android:entryValues="@array/settings_list_preference_local_currency_value"
+        android:key="list"
+        android:summary="USD/EUR"
+        android:title="Change Local Currency" />
+    </PreferenceCategory>
+
+
+</PreferenceScreen>
