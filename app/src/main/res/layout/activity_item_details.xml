@@ -22,11 +22,12 @@
 
     <Button
         android:id="@+id/buttonChartDay"
-        android:layout_width="50dp"
+        android:layout_width="60dp"
         android:layout_height="40dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="133dp"
         android:text="Day"
+        android:background="@color/black_shade_2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttonChartWeek"
         app:layout_constraintHorizontal_bias="0.5"
@@ -35,9 +36,10 @@
 
     <Button
         android:id="@+id/buttonChartWeek"
-        android:layout_width="50dp"
+        android:layout_width="60dp"
         android:layout_height="40dp"
         android:text="1W"
+        android:background="@color/black_shade_2"
         app:layout_constraintBottom_toBottomOf="@+id/buttonChartDay"
         app:layout_constraintEnd_toStartOf="@+id/buttonChartMonth"
         app:layout_constraintHorizontal_bias="0.5"
@@ -46,9 +48,10 @@
 
     <Button
         android:id="@+id/buttonChartMonth"
-        android:layout_width="50dp"
+        android:layout_width="60dp"
         android:layout_height="40dp"
         android:text="1M"
+        android:background="@color/black_shade_2"
         app:layout_constraintBottom_toBottomOf="@+id/buttonChartWeek"
         app:layout_constraintEnd_toStartOf="@+id/buttonChartYear"
         app:layout_constraintHorizontal_bias="0.5"
@@ -57,9 +60,10 @@
 
     <Button
         android:id="@+id/buttonChartYear"
-        android:layout_width="50dp"
+        android:layout_width="60dp"
         android:layout_height="40dp"
         android:text="1Y"
+        android:background="@color/black_shade_2"
         app:layout_constraintBottom_toBottomOf="@+id/buttonChartMonth"
         app:layout_constraintEnd_toStartOf="@+id/buttonChartMax"
         app:layout_constraintHorizontal_bias="0.5"
@@ -68,9 +72,10 @@
 
     <Button
         android:id="@+id/buttonChartMax"
-        android:layout_width="50dp"
+        android:layout_width="60dp"
         android:layout_height="40dp"
         android:text="Max"
+        android:background="@color/black_shade_2"
         app:layout_constraintBottom_toBottomOf="@+id/buttonChartYear"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
