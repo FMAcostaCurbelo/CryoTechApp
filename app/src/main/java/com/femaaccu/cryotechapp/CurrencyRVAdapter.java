@@ -32,8 +32,7 @@ public class CurrencyRVAdapter extends RecyclerView.Adapter<CurrencyRVAdapter.Vi
         this.context = context;
     }
     public void filterList(ArrayList<CurrencyRVModal> filteredList){
-
-        currencyRVModalArrayList = filteredList;
+        this.currencyRVModalArrayList = filteredList;
         notifyDataSetChanged();
 
     }
@@ -61,12 +60,13 @@ public class CurrencyRVAdapter extends RecyclerView.Adapter<CurrencyRVAdapter.Vi
         return currencyRVModalArrayList.size();
     }
 
-    public class ViewHolder  extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder{
         private TextView currencyName, symbolTV, rateTV, price;
         private ImageView imagen, arrow;
         private String currencyId, iconImage;
         private double changeRate;
         public ViewHolder(@NonNull View itemView) {
+
             super(itemView);
             currencyName = itemView.findViewById(R.id.IDTVCurrencyName);
             symbolTV = itemView.findViewById(R.id.idTVSymbol);

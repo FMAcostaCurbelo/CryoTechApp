@@ -5,9 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -41,6 +43,7 @@ public class ItemDetails extends AppCompatActivity {
     Button bDay, bWeek, bMonth, bYear, bMax;
     ImageView arrowImage, tviconImage;
     TextView tvchange;
+    String currencyValue;
     private static DecimalFormat df2 = new DecimalFormat("#.##");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +56,8 @@ public class ItemDetails extends AppCompatActivity {
         setContentView(view);
 
         String currencyId = extras.getString("currencyId");
-
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        currencyValue = sharedPref.getString("list", "eur");
 
         bDay = binding.buttonChartDay;
         bWeek = binding.buttonChartWeek;
@@ -105,7 +109,7 @@ public class ItemDetails extends AppCompatActivity {
     public void setCandleStickChart(String currencyID, String days){
 
 
-        String url = "https://api.coingecko.com/api/v3/coins/"+currencyID+"/ohlc?vs_currency=eur&days="+days;
+        String url = "https://api.coingecko.com/api/v3/coins/"+currencyID+"/ohlc?vs_currency="+currencyValue+"&days="+days;
 
         RequestQueue queue = Volley.newRequestQueue(this);
 
@@ -248,24 +252,20 @@ public class ItemDetails extends AppCompatActivity {
             this.year = makeYear(date);
         }
         private String makedayName(String date){
-            String dName = date.substring(0, 3);
-            return dName;
+            return date.substring(0, 3);
         }
         private String makemonthName(String date){
-            String mName = date.substring(4, 7);
-            return mName;
+            return date.substring(4, 7);
         }
         private String makedayNumber(String date){
-            String dyNumber = date.substring(8, 10);
-            return dyNumber;
+            return date.substring(8, 10);
         }
         private String makeHour(String date){
-            String mhour = date.substring(11, 13);
-            return mhour;
+            return date.substring(11, 13);
+
         }
         private String makeMinute(String date){
-            String mMinute = date.substring(14, 16);
-            return mMinute;
+            return date.substring(14, 16);
         }
         private String makeYear(String date){
             String mYear = "Error";

@@ -1,5 +1,6 @@
 package com.femaaccu.cryotechapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.motion.widget.OnSwipe;
@@ -32,6 +33,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     private String local_currency;
@@ -46,8 +48,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
         Toolbar toolbar = findViewById(R.id.mytoolbar);
         setSupportActionBar(toolbar);
+
 
 
         searchEDT = findViewById(R.id.IDEdtSearch);
@@ -91,12 +96,13 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<CurrencyRVModal> filteredList = new ArrayList<>();
         for (CurrencyRVModal item: currencyRVModalArrayList){
             String itemName = item.getName().toLowerCase();
-            if (itemName.toLowerCase().contains(item.getName().toLowerCase()))
-            filteredList.add(item);
+            if (itemName.contains(currency.toLowerCase())) {
 
+                filteredList.add(item);
+            }
         }
         if(filteredList.isEmpty()){
-            Toast.makeText(this, "Item not found ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Item not found ", Toast.LENGTH_SHORT);
         }else{
             currencyRVAdapter.filterList(filteredList);
         }
@@ -148,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -164,6 +171,19 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        finish();
+        startActivity(getIntent());
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        finish();
+        startActivity(getIntent());
+    }
 
     public void  loadSharedPreferences(){
 

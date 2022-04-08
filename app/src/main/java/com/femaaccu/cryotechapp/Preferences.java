@@ -1,6 +1,7 @@
 package com.femaaccu.cryotechapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.ListPreference;
@@ -12,17 +13,14 @@ import android.widget.Toast;
 
 
 public class Preferences extends PreferenceActivity {
-    public static final String PREFERENCES = "preferences";
-    public static final String LOCAL_CURRENCY = "local_currency";
+
     String local_currency;
     @Override
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         addPreferencesFromResource(R.xml.preferences);
 
         LoadSetting();
-
 
     }
     private void LoadSetting(){
@@ -52,10 +50,16 @@ public class Preferences extends PreferenceActivity {
 
                     editor.putString("list", local_currency);
                     editor.apply();
+                   // restartActivity();
                 }
                 return true;
             }
         });
+    }@Override
+    public void recreate() {
+        super.recreate();
+        finish();
+        startActivity(getIntent());
     }
 
 
