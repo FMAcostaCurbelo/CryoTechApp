@@ -42,7 +42,7 @@ public class ItemDetails extends AppCompatActivity {
     Bundle extras;
     Button bDay, bWeek, bMonth, bYear, bMax;
     ImageView arrowImage, tviconImage;
-    TextView tvchange;
+    TextView tvchange, tvIniValue, tvLastValue;
     String currencyValue;
     private static DecimalFormat df2 = new DecimalFormat("#.##");
     @Override
@@ -67,6 +67,8 @@ public class ItemDetails extends AppCompatActivity {
         arrowImage = binding.IDDetailArrow;
         tvchange = binding.idTextViewChange;
         tviconImage = binding.TViconImage;
+        tvIniValue = binding.textViewIniPrice;
+        tvLastValue = binding.textViewLastPrice;
 
         setCandleStickChart(currencyId, "1");
 
@@ -104,7 +106,7 @@ public class ItemDetails extends AppCompatActivity {
             }
         });
     }
-    public void setCandleStickChart(String currencyID, String days){
+    private void setCandleStickChart(String currencyID, String days){
 
 
         String url = "https://api.coingecko.com/api/v3/coins/"+currencyID+"/ohlc?vs_currency="+currencyValue+"&days="+days;
@@ -230,6 +232,10 @@ public class ItemDetails extends AppCompatActivity {
              // add it to the RequestQueue
             queue.add(getRequest);
     }
+    private void InitLastVAlue(){
+
+    }
+
     private class dateObject {
         //Thu Apr 07 13:30:00 GMT+02:00 2022
         String date;

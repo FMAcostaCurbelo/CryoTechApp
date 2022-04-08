@@ -6,10 +6,22 @@
     android:layout_height="match_parent"
     tools:context=".ItemDetails">
 
+    <TextView
+        android:id="@+id/textViewLastPrice"
+        android:layout_width="103dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="15dp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonChartYear"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/candlechart"
+        app:layout_constraintVertical_bias="0.0" />
+
     <com.github.mikephil.charting.charts.CandleStickChart
         android:id="@+id/candlechart"
-        android:layout_width="match_parent"
-        android:layout_height="542dp"
+        android:layout_width="412dp"
+        android:layout_height="512dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -23,8 +35,8 @@
         android:id="@+id/buttonChartDay"
         android:layout_width="60dp"
         android:layout_height="40dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="133dp"
+        android:layout_marginTop="59dp"
+        android:layout_marginBottom="120dp"
         android:backgroundTint="@color/black_shade_2"
         android:text="1D"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -130,5 +142,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonChartMax"
         app:srcCompat="@drawable/ic_cryptocoin" />
+
+    <TextView
+        android:id="@+id/textViewIniPrice"
+        android:layout_width="103dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="172dp"
+        android:layout_marginBottom="15dp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonChartDay"
+        app:layout_constraintEnd_toStartOf="@+id/textViewLastPrice"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/candlechart"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

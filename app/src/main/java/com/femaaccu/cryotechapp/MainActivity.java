@@ -48,12 +48,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
         Toolbar toolbar = findViewById(R.id.mytoolbar);
         setSupportActionBar(toolbar);
-
-
 
         searchEDT = findViewById(R.id.IDEdtSearch);
         currenciesRV= findViewById(R.id.IDRCurrencies);
@@ -89,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         loadSharedPreferences();
-        getCurrencyData(local_currency);
     }
 
     private void filterCurrencies(String currency){
