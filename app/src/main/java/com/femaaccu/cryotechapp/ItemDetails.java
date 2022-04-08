@@ -103,9 +103,7 @@ public class ItemDetails extends AppCompatActivity {
                 setCandleStickChart(currencyId, "max");
             }
         });
-
     }
-
     public void setCandleStickChart(String currencyID, String days){
 
 
@@ -268,7 +266,7 @@ public class ItemDetails extends AppCompatActivity {
             return date.substring(14, 16);
         }
         private String makeYear(String date){
-            String mYear = "Error";
+            String mYear = "Error reading Date";
             if (date.length()>33)
             mYear = date.substring(30, 34);
             return mYear;

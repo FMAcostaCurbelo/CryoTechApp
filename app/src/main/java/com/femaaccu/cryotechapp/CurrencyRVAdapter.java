@@ -2,6 +2,8 @@ package com.femaaccu.cryotechapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +22,16 @@ public class CurrencyRVAdapter extends RecyclerView.Adapter<CurrencyRVAdapter.Vi
     private ArrayList<CurrencyRVModal> currencyRVModalArrayList;
     private Context context;
     private static DecimalFormat df2 = new DecimalFormat("#.##");
+    private String localCurrencySymbol;
     @NonNull
     @Override
     public CurrencyRVAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.currency_rc_item,parent,false );
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        String local_currency = sharedPref.getString("list", "eur");
+        if (local_currency.equals("eur"))localCurrencySymbol="€";
+        if (local_currency.equals("usd"))localCurrencySymbol="$";
         return new CurrencyRVAdapter.ViewHolder(view);
     }
 
@@ -41,7 +49,7 @@ public class CurrencyRVAdapter extends RecyclerView.Adapter<CurrencyRVAdapter.Vi
         CurrencyRVModal currencyRVModal = currencyRVModalArrayList.get(position);
         holder.currencyName.setText(currencyRVModal.getName());
         holder.symbolTV.setText(currencyRVModal.getSymbol());
-        holder.price.setText("$"+df2.format(currencyRVModal.getPrice()));
+        holder.price.setText(localCurrencySymbol+df2.format(currencyRVModal.getPrice()));
         holder.currencyId = currencyRVModal.getId();
         holder.changeRate = (currencyRVModal.getRate());
         holder.iconImage = currencyRVModal.getImage();
