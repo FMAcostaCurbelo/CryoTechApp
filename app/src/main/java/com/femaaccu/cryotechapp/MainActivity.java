@@ -90,12 +90,13 @@ public class MainActivity extends AppCompatActivity {
     private void filterCurrencies(String currency){
         ArrayList<CurrencyRVModal> filteredList = new ArrayList<>();
         for (CurrencyRVModal item: currencyRVModalArrayList){
-            if(item.getName().toLowerCase().contains(currency.toLowerCase())){
-                filteredList.add(item);
-            }
+            String itemName = item.getName().toLowerCase();
+            if (itemName.toLowerCase().contains(item.getName().toLowerCase()))
+            filteredList.add(item);
+
         }
         if(filteredList.isEmpty()){
-            Toast.makeText(this, "No currency found for search query", Toast.LENGTH_SHORT);
+            Toast.makeText(this, "Item not found ", Toast.LENGTH_SHORT).show();
         }else{
             currencyRVAdapter.filterList(filteredList);
         }
@@ -127,15 +128,12 @@ public class MainActivity extends AppCompatActivity {
                         e.printStackTrace();
                         Toast.makeText(MainActivity.this, "Fail to exctract JSON data... "+e, Toast.LENGTH_LONG).show();
                     }
-
                 }
-
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadingPB.setVisibility(View.GONE);
                 Toast.makeText(MainActivity.this, "Fail to get the Data "+error, Toast.LENGTH_LONG).show();
-
             }
         }){
 

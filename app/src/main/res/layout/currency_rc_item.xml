@@ -81,7 +81,7 @@
             android:textColor="@color/white" />
 
         <ImageView
-            android:id="@+id/IDarrow"
+            android:id="@+id/IDarrowImage"
             android:layout_width="wrap_content"
             android:layout_height="15dp"
             android:layout_alignParentStart="true"

@@ -10,6 +10,8 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -24,10 +26,12 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.CandleData;
 import com.github.mikephil.charting.data.CandleDataSet;
 import com.github.mikephil.charting.data.CandleEntry;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -35,20 +39,20 @@ public class ItemDetails extends AppCompatActivity {
     private ActivityItemDetailsBinding binding;
     Bundle extras;
     Button bDay, bWeek, bMonth, bYear, bMax;
+    ImageView arrowImage, tviconImage;
+    TextView tvchange;
+    private static DecimalFormat df2 = new DecimalFormat("#.##");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_details);
         binding = ActivityItemDetailsBinding.inflate(getLayoutInflater());
 
-
         extras = getIntent().getExtras();
         View view = binding.getRoot();
         setContentView(view);
 
-
         String currencyId = extras.getString("currencyId");
-
 
 
         bDay = binding.buttonChartDay;
@@ -56,6 +60,9 @@ public class ItemDetails extends AppCompatActivity {
         bMonth = binding.buttonChartMonth;
         bYear = binding.buttonChartYear;
         bMax = binding.buttonChartMax;
+        arrowImage = binding.IDDetailArrow;
+        tvchange = binding.idTextViewChange;
+        tviconImage = binding.TViconImage;
 
         setCandleStickChart(currencyId, "1");
 
@@ -63,14 +70,12 @@ public class ItemDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setCandleStickChart(currencyId, "1");
-
             }
         });
         bWeek.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 setCandleStickChart(currencyId, "7");
-
             }
         });
         bMonth.setOnClickListener(new View.OnClickListener(){
@@ -95,11 +100,7 @@ public class ItemDetails extends AppCompatActivity {
             }
         });
 
-
-
-
     }
-
 
     public void setCandleStickChart(String currencyID, String days){
 
@@ -117,13 +118,15 @@ public class ItemDetails extends AppCompatActivity {
 
                         ArrayList<CandleEntry> candlestickentry = new ArrayList<>();
                         ArrayList<String> xvalue = new ArrayList<>();
-
                         for (int i = 0; i < response.length(); i++) {
                             try {
 
                                 JSONArray array = response.getJSONArray(i);
                                 String epochTime = array.getString(0);
                                 Date time = new Date(Long.parseLong(epochTime));
+                                dateObject realTime= new dateObject(time.toString());
+                                //Toast.makeText(ItemDetails.this, "el tiempo en string es  "+tiempo, Toast.LENGTH_LONG).show();
+
                                 String open = array.getString(1);
                                 String high = array.getString(2);
                                 String low = array.getString(3);
@@ -136,38 +139,63 @@ public class ItemDetails extends AppCompatActivity {
 
                                 switch (days){
                                     case "1":
-                                        xvalue.add(""+time.getHours()+":"+time.getMinutes());
+                                        xvalue.add(realTime.hour+":"+realTime.minute);
+                                        candlestickentry.add(new CandleEntry(i, floatHigh, floatLow, floatOpen, floatClose));
                                         break;
                                     case "7":
-                                        xvalue.add(""+time.getDay()+":"+time.getHours());
+                                        xvalue.add(realTime.dayName+" "+realTime.dayNumber);
+                                        candlestickentry.add(new CandleEntry(i, floatHigh, floatLow, floatOpen, floatClose));
                                         break;
                                     case "30":
-                                        xvalue.add(""+time.getDay());
-                                        break;
                                     case "365":
-                                        xvalue.add(""+time.getMonth());
+                                        xvalue.add(realTime.dayNumber+" "+realTime.monthName);
+                                        candlestickentry.add(new CandleEntry(i, floatHigh, floatLow, floatOpen, floatClose));
+
                                         break;
                                     case "max":
-                                        xvalue.add(""+time.getYear());
+                                        xvalue.add(realTime.monthName+" "+realTime.year);
+                                        candlestickentry.add(new CandleEntry(i, floatHigh, floatLow, floatOpen, floatClose));
                                         break;
                                     default:
-                                        xvalue.add("error");
+                                        xvalue.add("error not API data");
                                         break;
                                 }
-
-
-
-                                candlestickentry.add(new CandleEntry(i, floatHigh, floatLow, floatOpen, floatClose));
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
 
                         }
+                        CandleEntry ceObj = candlestickentry.get(0);
+                        float iniValue = ceObj.getHigh();
+                        ceObj = candlestickentry.get(candlestickentry.size()-1);
+                        float lastValue = ceObj.getHigh();
 
+                        if (days.equals("1")){
+                            double changerate = extras.getDouble("changeRate");
+                            tvchange.setText("%"+df2.format(changerate));
+                            if (changerate >= 0){
+                                arrowImage.setImageResource(R.drawable.greenarrow);
+                            }else{
+                                arrowImage.setImageResource(R.drawable.redarrowdown);
+                            }
+
+                        }else{
+
+                            if (lastValue>=iniValue){
+                                arrowImage.setImageResource(R.drawable.greenarrow);
+                            }else{
+                                arrowImage.setImageResource(R.drawable.redarrowdown);
+                            }
+                            float changerate = (((lastValue * 100)/iniValue)-100);
+                            String formatValue = "%"+df2.format(changerate);
+                            tvchange.setText(formatValue);
+                        }
                         String currencyname = extras.getString("currencyName");
-                        CandleDataSet candledataset = new CandleDataSet(candlestickentry, currencyname);
+                        String iconImage = extras.getString("iconImage");
 
+                        Picasso.get().load(iconImage).into(tviconImage);
+                        CandleDataSet candledataset = new CandleDataSet(candlestickentry, currencyname);
 
                         candledataset.setColor(Color.rgb(80,80,80));
                         candledataset.setShadowColor(android.R.color.holo_blue_bright);
@@ -177,14 +205,12 @@ public class ItemDetails extends AppCompatActivity {
                         candledataset.setIncreasingColor(Color.GREEN);
                         candledataset.setIncreasingPaintStyle(Paint.Style.FILL);
 
-
                         CandleData candledata = new CandleData(xvalue, candledataset);
 
                         CandleStickChart candlechart = binding.candlechart;
                         candlechart.setData(candledata);
                         candlechart.setBackgroundColor(Color.WHITE);
-                        candlechart.animateXY(2000,2000);
-
+                        candlechart.animateXY(1500,1000);
                         XAxis xval = candlechart.getXAxis();
                         xval.setPosition(XAxis.XAxisPosition.BOTTOM);
                         xval.setDrawGridLines(false);
@@ -202,7 +228,52 @@ public class ItemDetails extends AppCompatActivity {
              // add it to the RequestQueue
             queue.add(getRequest);
     }
+    private class dateObject {
+        //Thu Apr 07 13:30:00 GMT+02:00 2022
+        String date;
+        String dayName;
+        String monthName;
+        String dayNumber;
+        String hour;
+        String minute;
+        String year;
 
+        public dateObject(String date){
+            this.date = date;
+            this.dayName = makedayName(date);
+            this.monthName = makemonthName(date);
+            this.dayNumber = makedayNumber(date);
+            this.hour = makeHour(date);
+            this.minute = makeMinute(date);
+            this.year = makeYear(date);
+        }
+        private String makedayName(String date){
+            String dName = date.substring(0, 3);
+            return dName;
+        }
+        private String makemonthName(String date){
+            String mName = date.substring(4, 7);
+            return mName;
+        }
+        private String makedayNumber(String date){
+            String dyNumber = date.substring(8, 10);
+            return dyNumber;
+        }
+        private String makeHour(String date){
+            String mhour = date.substring(11, 13);
+            return mhour;
+        }
+        private String makeMinute(String date){
+            String mMinute = date.substring(14, 16);
+            return mMinute;
+        }
+        private String makeYear(String date){
+            String mYear = "Error";
+            if (date.length()>33)
+            mYear = date.substring(30, 34);
+            return mYear;
+        }
+    }
 
 
 }

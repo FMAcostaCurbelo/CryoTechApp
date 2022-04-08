@@ -32,8 +32,10 @@ public class CurrencyRVAdapter extends RecyclerView.Adapter<CurrencyRVAdapter.Vi
         this.context = context;
     }
     public void filterList(ArrayList<CurrencyRVModal> filteredList){
+
         currencyRVModalArrayList = filteredList;
         notifyDataSetChanged();
+
     }
     @Override
     public void onBindViewHolder(@NonNull CurrencyRVAdapter.ViewHolder holder, int position) {
@@ -42,6 +44,8 @@ public class CurrencyRVAdapter extends RecyclerView.Adapter<CurrencyRVAdapter.Vi
         holder.symbolTV.setText(currencyRVModal.getSymbol());
         holder.price.setText("$"+df2.format(currencyRVModal.getPrice()));
         holder.currencyId = currencyRVModal.getId();
+        holder.changeRate = (currencyRVModal.getRate());
+        holder.iconImage = currencyRVModal.getImage();
         double rate = currencyRVModal.getRate();
         holder.rateTV.setText("%"+df2.format(currencyRVModal.getRate()));
         if (rate >= 0){
@@ -60,7 +64,8 @@ public class CurrencyRVAdapter extends RecyclerView.Adapter<CurrencyRVAdapter.Vi
     public class ViewHolder  extends RecyclerView.ViewHolder{
         private TextView currencyName, symbolTV, rateTV, price;
         private ImageView imagen, arrow;
-        private String currencyId;
+        private String currencyId, iconImage;
+        private double changeRate;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             currencyName = itemView.findViewById(R.id.IDTVCurrencyName);
@@ -68,16 +73,17 @@ public class CurrencyRVAdapter extends RecyclerView.Adapter<CurrencyRVAdapter.Vi
             price = itemView.findViewById(R.id.IDTVCurrencyPrice);
             imagen = itemView.findViewById(R.id.IDImagenView);
             rateTV = itemView.findViewById(R.id.IDCurrencyRate);
-            arrow = itemView.findViewById(R.id.IDarrow);
+            arrow = itemView.findViewById(R.id.IDarrowImage);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                   // int[] images = {-1, -1};
+
                     Intent intent = new Intent(context, ItemDetails.class);
 
                     //enviamos la información al layout del controlador y lo iniciamos mediante un intent
-                    intent.putExtra("currencyName", currencyName.getText());
+                    intent.putExtra("changeRate", changeRate);
                     intent.putExtra("currencyId", currencyId);
+                    intent.putExtra("iconImage", iconImage);
                     //intent.putExtra("imagenes", images);
                     context.startActivity(intent);
                 }
