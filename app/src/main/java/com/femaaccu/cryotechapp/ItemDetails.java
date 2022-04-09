@@ -2,9 +2,6 @@ package com.femaaccu.cryotechapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.NotificationManager;
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -21,6 +18,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.femaaccu.cryotechapp.databinding.ActivityItemDetailsBinding;
 import com.github.mikephil.charting.charts.CandleStickChart;
@@ -32,6 +30,7 @@ import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -40,10 +39,11 @@ import java.util.Date;
 public class ItemDetails extends AppCompatActivity {
     private ActivityItemDetailsBinding binding;
     Bundle extras;
+    double currentPrice, iniPrice;
     Button bDay, bWeek, bMonth, bYear, bMax;
     ImageView arrowImage, tviconImage;
     TextView tvchange, tvIniValue, tvLastValue;
-    String currencyValue;
+    String local_currency, localCurrencySymbol;
     private static DecimalFormat df2 = new DecimalFormat("#.##");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +56,16 @@ public class ItemDetails extends AppCompatActivity {
         setContentView(view);
 
         String currencyId = extras.getString("currencyId");
+        currentPrice = extras.getDouble("currentPrice");
+
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        currencyValue = sharedPref.getString("list", "eur");
+        local_currency = sharedPref.getString("list", "eur");
+
+        if (local_currency.equals("eur"))localCurrencySymbol="€";
+        if (local_currency.equals("usd"))localCurrencySymbol="$";
+
+
+
 
         bDay = binding.buttonChartDay;
         bWeek = binding.buttonChartWeek;
@@ -69,6 +77,9 @@ public class ItemDetails extends AppCompatActivity {
         tviconImage = binding.TViconImage;
         tvIniValue = binding.textViewIniPrice;
         tvLastValue = binding.textViewLastPrice;
+
+        String currentValue=localCurrencySymbol+df2.format(currentPrice);
+        tvLastValue.setText(currentValue);
 
         setCandleStickChart(currencyId, "1");
 
@@ -82,6 +93,8 @@ public class ItemDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setCandleStickChart(currencyId, "7");
+
+
             }
         });
         bMonth.setOnClickListener(new View.OnClickListener(){
@@ -89,6 +102,7 @@ public class ItemDetails extends AppCompatActivity {
             public void onClick(View v) {
 
                 setCandleStickChart(currencyId, "30");
+
             }
         });
         bYear.setOnClickListener(new View.OnClickListener(){
@@ -96,6 +110,7 @@ public class ItemDetails extends AppCompatActivity {
             public void onClick(View v) {
 
                 setCandleStickChart(currencyId, "365");
+
             }
         });
         bMax.setOnClickListener(new View.OnClickListener(){
@@ -103,13 +118,13 @@ public class ItemDetails extends AppCompatActivity {
             public void onClick(View v) {
 
                 setCandleStickChart(currencyId, "max");
+
             }
         });
     }
     private void setCandleStickChart(String currencyID, String days){
 
-
-        String url = "https://api.coingecko.com/api/v3/coins/"+currencyID+"/ohlc?vs_currency="+currencyValue+"&days="+days;
+        String url = "https://api.coingecko.com/api/v3/coins/"+currencyID+"/ohlc?vs_currency="+ local_currency +"&days="+days;
 
         RequestQueue queue = Volley.newRequestQueue(this);
 
@@ -124,12 +139,15 @@ public class ItemDetails extends AppCompatActivity {
                         ArrayList<String> xvalue = new ArrayList<>();
                         for (int i = 0; i < response.length(); i++) {
                             try {
-
                                 JSONArray array = response.getJSONArray(i);
                                 String epochTime = array.getString(0);
                                 Date time = new Date(Long.parseLong(epochTime));
                                 dateObject realTime= new dateObject(time.toString());
                                 //Toast.makeText(ItemDetails.this, "el tiempo en string es  "+tiempo, Toast.LENGTH_LONG).show();
+
+                                if (i==0){
+                                    InitValue(currencyID, realTime, days);
+                                }
 
                                 String open = array.getString(1);
                                 String high = array.getString(2);
@@ -170,31 +188,8 @@ public class ItemDetails extends AppCompatActivity {
                             }
 
                         }
-                        CandleEntry ceObj = candlestickentry.get(0);
-                        float iniValue = ceObj.getHigh();
-                        ceObj = candlestickentry.get(candlestickentry.size()-1);
-                        float lastValue = ceObj.getHigh();
 
-                        if (days.equals("1")){
-                            double changerate = extras.getDouble("changeRate");
-                            tvchange.setText("%"+df2.format(changerate));
-                            if (changerate >= 0){
-                                arrowImage.setImageResource(R.drawable.greenarrow);
-                            }else{
-                                arrowImage.setImageResource(R.drawable.redarrowdown);
-                            }
 
-                        }else{
-
-                            if (lastValue>=iniValue){
-                                arrowImage.setImageResource(R.drawable.greenarrow);
-                            }else{
-                                arrowImage.setImageResource(R.drawable.redarrowdown);
-                            }
-                            float changerate = (((lastValue * 100)/iniValue)-100);
-                            String formatValue = "%"+df2.format(changerate);
-                            tvchange.setText(formatValue);
-                        }
                         String currencyname = extras.getString("currencyName");
                         String iconImage = extras.getString("iconImage");
 
@@ -232,11 +227,64 @@ public class ItemDetails extends AppCompatActivity {
              // add it to the RequestQueue
             queue.add(getRequest);
     }
-    private void InitLastVAlue(){
+    private void InitValue(String coin, dateObject dateobj, String days){
+        //30-12-2017
+        String date = dateobj.dayNumber+"-"+dateobj.getMonthNumber()+"-"+dateobj.year;
+        String url = "https://api.coingecko.com/api/v3/coins/"+coin+"/history?date="+date+"&localization=false";
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+                    JSONObject market_data = response.getJSONObject("market_data");
+                    JSONObject current_price = market_data.getJSONObject("current_price");
+                    double doubleCurrentPrice = Double.parseDouble(current_price.getString(local_currency));
+                    String currentPrice = localCurrencySymbol+df2.format(doubleCurrentPrice);
+                    iniPrice = doubleCurrentPrice;
+                    loadDifferenceRate(doubleCurrentPrice, days);
+                    tvIniValue.setText(currentPrice);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        },new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(ItemDetails.this, "ERROR IS"+error.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
+        queue.add(getRequest);
+
+    }
+    private void loadDifferenceRate(double iniPrice, String days){
+        if (days.equals("1")){
+            double changerate = extras.getDouble("changeRate");
+            tvchange.setText("%"+df2.format(changerate));
+            if (changerate >= 0){
+                arrowImage.setImageResource(R.drawable.greenarrow);
+            }else{
+                arrowImage.setImageResource(R.drawable.redarrowdown);
+            }
+
+        }else{
+            if (currentPrice>=iniPrice){
+                arrowImage.setImageResource(R.drawable.greenarrow);
+            }else{
+                arrowImage.setImageResource(R.drawable.redarrowdown);
+            }
+            double changeRate = (((currentPrice-iniPrice)*100)/iniPrice);
+            String formatValue = "%"+df2.format(changeRate);
+            tvchange.setText(formatValue);
+        }
 
     }
 
-    private class dateObject {
+
+    private static class dateObject {
         //Thu Apr 07 13:30:00 GMT+02:00 2022
         String date;
         String dayName;
@@ -276,6 +324,24 @@ public class ItemDetails extends AppCompatActivity {
             if (date.length()>33)
             mYear = date.substring(30, 34);
             return mYear;
+        }
+
+        public String getMonthNumber(){
+            switch(monthName){
+                case("Jan"):return "01";
+                case("Feb"):return "02";
+                case("Mar"):return "03";
+                case("Apr"):return "04";
+                case("May"):return "05";
+                case("Jun"):return "06";
+                case("Jul"):return "07";
+                case("Aug"):return "08";
+                case("Sep"):return "09";
+                case("Oct"):return "10";
+                case("Nov"):return "11";
+                case("Dec"):return "12";
+                default: return "null";
+            }
         }
     }
 

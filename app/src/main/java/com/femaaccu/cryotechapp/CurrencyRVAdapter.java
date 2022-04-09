@@ -53,6 +53,7 @@ public class CurrencyRVAdapter extends RecyclerView.Adapter<CurrencyRVAdapter.Vi
         holder.currencyId = currencyRVModal.getId();
         holder.changeRate = (currencyRVModal.getRate());
         holder.iconImage = currencyRVModal.getImage();
+        holder.currentPrice = currencyRVModal.getPrice();
         double rate = currencyRVModal.getRate();
         holder.rateTV.setText("%"+df2.format(currencyRVModal.getRate()));
         if (rate >= 0){
@@ -72,10 +73,10 @@ public class CurrencyRVAdapter extends RecyclerView.Adapter<CurrencyRVAdapter.Vi
         private TextView currencyName, symbolTV, rateTV, price;
         private ImageView imagen, arrow;
         private String currencyId, iconImage;
-        private double changeRate;
+        private double changeRate, currentPrice;
         public ViewHolder(@NonNull View itemView) {
-
             super(itemView);
+
             currencyName = itemView.findViewById(R.id.IDTVCurrencyName);
             symbolTV = itemView.findViewById(R.id.idTVSymbol);
             price = itemView.findViewById(R.id.IDTVCurrencyPrice);
@@ -92,6 +93,7 @@ public class CurrencyRVAdapter extends RecyclerView.Adapter<CurrencyRVAdapter.Vi
                     intent.putExtra("changeRate", changeRate);
                     intent.putExtra("currencyId", currencyId);
                     intent.putExtra("iconImage", iconImage);
+                    intent.putExtra("currentPrice", currentPrice);
                     //intent.putExtra("imagenes", images);
                     context.startActivity(intent);
                 }
