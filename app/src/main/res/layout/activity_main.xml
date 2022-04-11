@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:layout_below="@id/mytoolbar"
-        android:hint="Crypto Currency search"
+        android:hint="@string/search"
         android:textColor="@color/white"
         android:textColorHint="@color/white" />
 

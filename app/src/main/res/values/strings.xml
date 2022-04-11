@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CryoTechApp</string>
+    <string name="app_name">GreenChart</string>
     <string-array name="settings_list_preference_local_currency">
     <item>EUR</item>
     <item>USD</item>
@@ -12,5 +12,6 @@
         <item>Spanish</item>
         <item>English</item>
     </string-array>
+    <string name ="search">Search...</string>
 
 </resources>

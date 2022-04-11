@@ -42,7 +42,7 @@ public class ItemDetails extends AppCompatActivity {
     double currentPrice, iniPrice;
     Button bDay, bWeek, bMonth, bYear, bMax;
     ImageView arrowImage, tviconImage;
-    TextView tvchange, tvIniValue, tvLastValue;
+    TextView tvchange, tvIniValue, tvLastValue, tvCurrencyName;
     String local_currency, localCurrencySymbol;
     private static DecimalFormat df2 = new DecimalFormat("#.##");
     @Override
@@ -77,7 +77,9 @@ public class ItemDetails extends AppCompatActivity {
         tviconImage = binding.TViconImage;
         tvIniValue = binding.textViewIniPrice;
         tvLastValue = binding.textViewLastPrice;
+        tvCurrencyName = binding.textViewCurrencyName;
 
+        tvCurrencyName.setText(currencyId);
         String currentValue=localCurrencySymbol+df2.format(currentPrice);
         tvLastValue.setText(currentValue);
 
@@ -188,7 +190,6 @@ public class ItemDetails extends AppCompatActivity {
                             }
 
                         }
-
 
                         String currencyname = extras.getString("currencyName");
                         String iconImage = extras.getString("iconImage");
