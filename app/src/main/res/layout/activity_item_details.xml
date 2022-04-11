@@ -10,19 +10,16 @@
         android:id="@+id/textViewLastPrice"
         android:layout_width="103dp"
         android:layout_height="38dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginBottom="15dp"
         android:gravity="end"
         app:autoSizeMaxTextSize="20sp"
         app:autoSizeMinTextSize="2sp"
         app:autoSizeStepGranularity="2sp"
         app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toTopOf="@+id/buttonChartYear"
+        app:layout_constraintBottom_toBottomOf="@+id/idTextViewChange"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.941"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/candlechart"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/idTextViewChange"
+        app:layout_constraintTop_toTopOf="@+id/idTextViewChange" />
 
     <com.github.mikephil.charting.charts.CandleStickChart
         android:id="@+id/candlechart"
@@ -110,28 +107,25 @@
         android:layout_width="47dp"
         android:layout_height="37dp"
         android:scaleType="fitXY"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.363"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/candlechart"
-        app:layout_constraintVertical_bias="0.033" />
+        app:layout_constraintBottom_toBottomOf="@+id/textViewIniPrice"
+        app:layout_constraintEnd_toStartOf="@+id/idTextViewChange"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/textViewIniPrice"
+        app:layout_constraintTop_toTopOf="@+id/textViewIniPrice" />
 
     <TextView
         android:id="@+id/idTextViewChange"
         android:layout_width="79dp"
         android:layout_height="44dp"
-        android:layout_marginTop="6dp"
         app:autoSizeMaxTextSize="28sp"
         app:autoSizeMinTextSize="2sp"
         app:autoSizeStepGranularity="2sp"
         app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.614"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/candlechart"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintBottom_toBottomOf="@+id/IDDetailArrow"
+        app:layout_constraintEnd_toStartOf="@+id/textViewLastPrice"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/IDDetailArrow"
+        app:layout_constraintTop_toTopOf="@+id/IDDetailArrow" />
 
     <ImageView
         android:id="@+id/TViconImage"
@@ -143,25 +137,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.907"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonChartMax"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/buttonChartMax" />
 
     <TextView
         android:id="@+id/textViewIniPrice"
         android:layout_width="103dp"
         android:layout_height="38dp"
         android:layout_marginTop="6dp"
-        android:layout_marginBottom="15dp"
         app:autoSizeMaxTextSize="20sp"
         app:autoSizeMinTextSize="2sp"
         app:autoSizeStepGranularity="2sp"
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toTopOf="@+id/buttonChartDay"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.058"
+        app:layout_constraintEnd_toStartOf="@+id/IDDetailArrow"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/candlechart"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/candlechart" />
 
     <TextView
         android:id="@+id/textViewCurrencyName"
