@@ -33,6 +33,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
@@ -86,7 +88,20 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         loadSharedPreferences();
     }
+    private void sortCurrencies(){
 
+        Collections.sort(currencyRVModalArrayList, new Comparator<CurrencyRVModal>(){
+            public int compare(CurrencyRVModal e1, CurrencyRVModal e2){
+                 return (""+e2.getRate()).compareTo(""+e1.getRate());
+            }
+        });
+        if(currencyRVModalArrayList.isEmpty()){
+            Toast.makeText(this, "Item not found ", Toast.LENGTH_SHORT);
+        }else{
+            currencyRVAdapter.filterList(currencyRVModalArrayList);
+
+        }
+    }
     private void filterCurrencies(String currency){
         ArrayList<CurrencyRVModal> filteredList = new ArrayList<>();
         for (CurrencyRVModal item: currencyRVModalArrayList){
@@ -100,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Item not found ", Toast.LENGTH_SHORT);
         }else{
             currencyRVAdapter.filterList(filteredList);
+
         }
     }
     private void getCurrencyData(String local_currency){
@@ -161,6 +177,8 @@ public class MainActivity extends AppCompatActivity {
             Intent i = new Intent(this, Preferences.class);
             startActivity(i);
             return true;
+        }else if (id == R.id.action_sort){
+            sortCurrencies();
         }
 
         return super.onOptionsItemSelected(item);
@@ -186,6 +204,7 @@ public class MainActivity extends AppCompatActivity {
         local_currency = sharedPref.getString("list", "eur");
 
     }
+
 
 
 }

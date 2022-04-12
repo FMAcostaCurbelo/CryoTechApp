@@ -16,7 +16,7 @@
         android:icon="@drawable/ic_cryptocoin"
         app:showAsAction="ifRoom"/>
     <item
-        android:id="@+id/action_user"
+        android:id="@+id/action_sort"
         android:orderInCategory="300"
         android:title="User"
         android:icon="@drawable/greena12"
