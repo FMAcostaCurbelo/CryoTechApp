@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
+
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
@@ -12,13 +13,20 @@
     <item
         android:id="@+id/action_search"
         android:orderInCategory="200"
-        android:title="Search"
+        android:title="Order by value"
         android:icon="@drawable/ic_cryptocoin"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
     <item
         android:id="@+id/action_sort"
         android:orderInCategory="300"
-        android:title="User"
+        android:title="order by rate"
         android:icon="@drawable/greena12"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_favorite"
+        android:orderInCategory="400"
+        android:title="favorites"
+        android:icon="@drawable/fill_star"
+        app:showAsAction="always" />
+
 </menu>

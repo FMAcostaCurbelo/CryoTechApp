@@ -1,7 +1,9 @@
 package com.femaaccu.cryotechapp;
 
+
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -20,6 +22,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.femaaccu.cryotechapp.database.AppDataBase;
+import com.femaaccu.cryotechapp.database.FavoriteDAO;
+import com.femaaccu.cryotechapp.database.Favorites;
 import com.femaaccu.cryotechapp.databinding.ActivityItemDetailsBinding;
 import com.github.mikephil.charting.charts.CandleStickChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -42,8 +47,13 @@ public class ItemDetails extends AppCompatActivity {
     double currentPrice, iniPrice;
     Button bDay, bWeek, bMonth, bYear, bMax;
     ImageView arrowImage, tviconImage;
-    TextView tvchange, tvIniValue, tvLastValue, tvCurrencyName;
+    TextView tvchange, tvIniValue, tvLastValue, tvCurrencyName, tvTarget;
     String local_currency, localCurrencySymbol;
+    String currencyId;
+    ImageView iButtonFav;
+    AppDataBase db;
+    FavoriteDAO dao;
+    Context context;
     private static DecimalFormat df2 = new DecimalFormat("#.##");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +61,15 @@ public class ItemDetails extends AppCompatActivity {
         setContentView(R.layout.activity_item_details);
         binding = ActivityItemDetailsBinding.inflate(getLayoutInflater());
 
+        context = this.getApplicationContext();
+        db = AppDataBase.getInstance(context);
+        dao = db.favouriteDAO();
+
         extras = getIntent().getExtras();
         View view = binding.getRoot();
         setContentView(view);
 
-        String currencyId = extras.getString("currencyId");
+        currencyId = extras.getString("currencyId");
         currentPrice = extras.getDouble("currentPrice");
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -63,9 +77,6 @@ public class ItemDetails extends AppCompatActivity {
 
         if (local_currency.equals("eur"))localCurrencySymbol="€";
         if (local_currency.equals("usd"))localCurrencySymbol="$";
-
-
-
 
         bDay = binding.buttonChartDay;
         bWeek = binding.buttonChartWeek;
@@ -78,6 +89,12 @@ public class ItemDetails extends AppCompatActivity {
         tvIniValue = binding.textViewIniPrice;
         tvLastValue = binding.textViewLastPrice;
         tvCurrencyName = binding.textViewCurrencyName;
+        tvTarget = binding.textViewTarget;
+        iButtonFav = binding.imageButtonFav;
+
+        Favorites checkifFav = dao.findByName(currencyId);
+        if(checkifFav!=null)
+            iButtonFav.setImageResource(R.drawable.fill_star);
 
         tvCurrencyName.setText(currencyId);
         String currentValue=localCurrencySymbol+df2.format(currentPrice);
@@ -123,7 +140,34 @@ public class ItemDetails extends AppCompatActivity {
 
             }
         });
+        iButtonFav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Favorites checkIfAlreadyInserted = dao.findByName(currencyId);
+                if (checkIfAlreadyInserted==null) {
+                    checkIfAlreadyInserted = new Favorites(currencyId);
+                    dao.insert(checkIfAlreadyInserted);
+                    Toast.makeText(ItemDetails.this, checkIfAlreadyInserted.getCurrency_id()+" Added to Favorites" , Toast.LENGTH_SHORT).show();
+                    iButtonFav.setImageResource(R.drawable.fill_star);
+                }else{
+                    dao.delete(checkIfAlreadyInserted);
+                    Toast.makeText(ItemDetails.this, currencyId+" Removed from Favorites" , Toast.LENGTH_SHORT).show();
+                    iButtonFav.setImageResource(R.drawable.empty_star);
+                }
+            }
+        });
+        tvTarget.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+
     }
+
+
     private void setCandleStickChart(String currencyID, String days){
 
         String url = "https://api.coingecko.com/api/v3/coins/"+currencyID+"/ohlc?vs_currency="+ local_currency +"&days="+days;
@@ -283,7 +327,6 @@ public class ItemDetails extends AppCompatActivity {
         }
 
     }
-
 
     private static class dateObject {
         //Thu Apr 07 13:30:00 GMT+02:00 2022

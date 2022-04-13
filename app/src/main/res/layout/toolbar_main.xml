@@ -4,7 +4,6 @@
     android:layout_height="wrap_content"
     android:background="@color/black_shade3"
     android:elevation="4dp"
-
     >
 
 </androidx.appcompat.widget.Toolbar>

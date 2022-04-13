@@ -6,9 +6,10 @@
     android:layout_height="match_parent"
     android:background="@color/black_shade_1"
     tools:context=".MainActivity">
+
     <include
-        layout="@layout/toolbar"
         android:id="@+id/mytoolbar"
+        layout="@layout/toolbar_main"
 
         />
     <EditText

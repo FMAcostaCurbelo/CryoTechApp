@@ -3,7 +3,6 @@ package com.femaaccu.cryotechapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.motion.widget.OnSwipe;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,6 +26,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.femaaccu.cryotechapp.database.AppDataBase;
+import com.femaaccu.cryotechapp.database.FavoriteDAO;
+import com.femaaccu.cryotechapp.database.Favorites;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,7 +37,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Locale;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private String local_currency;
@@ -44,11 +46,20 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar loadingPB;
     private ArrayList<CurrencyRVModal> currencyRVModalArrayList;
     private CurrencyRVAdapter currencyRVAdapter;
-
+    private boolean sortType;
+    AppDataBase db;
+    FavoriteDAO dao;
+    Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        sortType = true;
+
+        context = this.getApplicationContext();
+        db = AppDataBase.getInstance(context);
+        dao = db.favouriteDAO();
 
         Toolbar toolbar = findViewById(R.id.mytoolbar);
         setSupportActionBar(toolbar);
@@ -88,13 +99,47 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         loadSharedPreferences();
     }
-    private void sortCurrencies(){
+    private void sortCurrenciesUsingRate(){
+        if(sortType) {
+            Collections.sort(currencyRVModalArrayList, new Comparator<CurrencyRVModal>() {
+                public int compare(CurrencyRVModal e1, CurrencyRVModal e2) {
+                    return Double.compare(e2.getRate(), e1.getRate());
+                }
+            });
+            sortType = false;
+        }
+        else{
+            Collections.sort(currencyRVModalArrayList, new Comparator<CurrencyRVModal>(){
+                public int compare(CurrencyRVModal e1, CurrencyRVModal e2){
+                    return Double.compare(e1.getRate(), e2.getRate());
+                }
+            });
+            sortType = true;
+        }
+        if(currencyRVModalArrayList.isEmpty()){
+            Toast.makeText(this, "Item not found ", Toast.LENGTH_SHORT);
+        }else{
+            currencyRVAdapter.filterList(currencyRVModalArrayList);
 
-        Collections.sort(currencyRVModalArrayList, new Comparator<CurrencyRVModal>(){
-            public int compare(CurrencyRVModal e1, CurrencyRVModal e2){
-                 return (""+e2.getRate()).compareTo(""+e1.getRate());
-            }
-        });
+        }
+    }
+    private void sortCurrenciesUsingPrice(){
+        if(sortType) {
+            Collections.sort(currencyRVModalArrayList, new Comparator<CurrencyRVModal>() {
+                public int compare(CurrencyRVModal e1, CurrencyRVModal e2) {
+                    return Double.compare(e2.getPrice(), e1.getPrice());
+                }
+            });
+            sortType = false;
+        }
+        else{
+            Collections.sort(currencyRVModalArrayList, new Comparator<CurrencyRVModal>(){
+                public int compare(CurrencyRVModal e1, CurrencyRVModal e2){
+                    return Double.compare(e1.getPrice(), e2.getPrice());
+                }
+            });
+            sortType = true;
+        }
         if(currencyRVModalArrayList.isEmpty()){
             Toast.makeText(this, "Item not found ", Toast.LENGTH_SHORT);
         }else{
@@ -161,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.mymenu, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -178,7 +223,11 @@ public class MainActivity extends AppCompatActivity {
             startActivity(i);
             return true;
         }else if (id == R.id.action_sort){
-            sortCurrencies();
+            sortCurrenciesUsingRate();
+        }else if (id == R.id.action_search){
+            sortCurrenciesUsingPrice();
+        }else if (id == R.id.action_favorite){
+            sortCurrenciesUsingFavorites();
         }
 
         return super.onOptionsItemSelected(item);
@@ -205,6 +254,24 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void  sortCurrenciesUsingFavorites(){
+        ArrayList<CurrencyRVModal> favcurrencyRVModalArrayList = new ArrayList<>();
+        List<Favorites> favoritesList = dao.getAll();
+        if (favoritesList!=null){
 
+            for (CurrencyRVModal item:currencyRVModalArrayList) {
+                for (Favorites item2: favoritesList) {
+                    if (item.getId().equals(item2.getCurrency_id())){
+                        favcurrencyRVModalArrayList.add(item);
+                    }
+                }
+            }
+            currencyRVAdapter.filterList(favcurrencyRVModalArrayList);
+
+        }else{
+            Toast.makeText(MainActivity.this, "you don't have Favorites yet, add some!", Toast.LENGTH_LONG).show();
+        }
+
+    }
 
 }

@@ -50,7 +50,6 @@ public class Preferences extends PreferenceActivity {
 
                     editor.putString("list", local_currency);
                     editor.apply();
-                   // restartActivity();
                 }
                 return true;
             }
@@ -58,8 +57,8 @@ public class Preferences extends PreferenceActivity {
     }@Override
     public void recreate() {
         super.recreate();
-        finish();
-        startActivity(getIntent());
+        //finish();
+        //startActivity(getIntent());
     }
 
 
