@@ -44,7 +44,7 @@ import java.util.Date;
 public class ItemDetails extends AppCompatActivity {
     private ActivityItemDetailsBinding binding;
     Bundle extras;
-    double currentPrice, iniPrice;
+    double currentPrice, iniPrice, floatValuefordayone;
     Button bDay, bWeek, bMonth, bYear, bMax;
     ImageView arrowImage, tviconImage;
     TextView tvchange, tvIniValue, tvLastValue, tvCurrencyName, tvTarget;
@@ -62,6 +62,7 @@ public class ItemDetails extends AppCompatActivity {
         binding = ActivityItemDetailsBinding.inflate(getLayoutInflater());
 
         context = this.getApplicationContext();
+
         db = AppDataBase.getInstance(context);
         dao = db.favouriteDAO();
 
@@ -207,6 +208,7 @@ public class ItemDetails extends AppCompatActivity {
 
                                 switch (days){
                                     case "1":
+                                        if (i==0)floatValuefordayone=floatOpen;
                                         xvalue.add(realTime.hour+":"+realTime.minute);
                                         candlestickentry.add(new CandleEntry(i, floatHigh, floatLow, floatOpen, floatClose));
                                         break;
@@ -288,8 +290,9 @@ public class ItemDetails extends AppCompatActivity {
                     double doubleCurrentPrice = Double.parseDouble(current_price.getString(local_currency));
                     String currentPrice = localCurrencySymbol+df2.format(doubleCurrentPrice);
                     iniPrice = doubleCurrentPrice;
-                    loadDifferenceRate(doubleCurrentPrice, days);
                     tvIniValue.setText(currentPrice);
+                    loadDifferenceRate(doubleCurrentPrice, days);
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -309,6 +312,8 @@ public class ItemDetails extends AppCompatActivity {
         if (days.equals("1")){
             double changerate = extras.getDouble("changeRate");
             tvchange.setText("%"+df2.format(changerate));
+
+            tvIniValue.setText(localCurrencySymbol+df2.format(floatValuefordayone));
             if (changerate >= 0){
                 arrowImage.setImageResource(R.drawable.greenarrow);
             }else{
