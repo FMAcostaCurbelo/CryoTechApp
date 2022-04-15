@@ -352,7 +352,12 @@ public class ItemDetails extends AppCompatActivity {
 
 
     }
-
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        finish();
+        startActivity(getIntent());
+    }
     private void loadTargetPrice(){
         Target targetObject = targetDAO.findByName(currencyName);
         if (targetObject!=null) {
