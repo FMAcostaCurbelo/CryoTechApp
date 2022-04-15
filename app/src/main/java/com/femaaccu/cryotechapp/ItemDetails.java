@@ -2,8 +2,10 @@ package com.femaaccu.cryotechapp;
 
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -25,6 +27,8 @@ import com.android.volley.toolbox.Volley;
 import com.femaaccu.cryotechapp.database.AppDataBase;
 import com.femaaccu.cryotechapp.database.FavoriteDAO;
 import com.femaaccu.cryotechapp.database.Favorites;
+import com.femaaccu.cryotechapp.database.Target;
+import com.femaaccu.cryotechapp.database.TargetDAO;
 import com.femaaccu.cryotechapp.databinding.ActivityItemDetailsBinding;
 import com.github.mikephil.charting.charts.CandleStickChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -46,14 +50,16 @@ public class ItemDetails extends AppCompatActivity {
     Bundle extras;
     double currentPrice, iniPrice, floatValuefordayone;
     Button bDay, bWeek, bMonth, bYear, bMax;
-    ImageView arrowImage, tviconImage;
-    TextView tvchange, tvIniValue, tvLastValue, tvCurrencyName, tvTarget;
+    ImageView arrowImage, tviconImage, iVArrowTarget;
+    TextView tvchange, tvIniValue, tvLastValue, tvCurrencyName, tvTargetPriceDetails, tvPriceBase, tvChangeToTarget;
     String local_currency, localCurrencySymbol;
-    String currencyId;
+    String currencyId, currencyName;
     ImageView iButtonFav;
     AppDataBase db;
-    FavoriteDAO dao;
+    FavoriteDAO favoriteDAO;
+    TargetDAO targetDAO;
     Context context;
+    ConstraintLayout targetPriceLayout;
     private static DecimalFormat df2 = new DecimalFormat("#.##");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,14 +70,18 @@ public class ItemDetails extends AppCompatActivity {
         context = this.getApplicationContext();
 
         db = AppDataBase.getInstance(context);
-        dao = db.favouriteDAO();
-
+        favoriteDAO = db.favouriteDAO();
+        targetDAO = db.targetDAO();
         extras = getIntent().getExtras();
         View view = binding.getRoot();
         setContentView(view);
 
         currencyId = extras.getString("currencyId");
         currentPrice = extras.getDouble("currentPrice");
+        currencyName = extras.getString("currencyName");
+        String iconImage = extras.getString("iconImage");
+
+
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         local_currency = sharedPref.getString("list", "eur");
@@ -90,18 +100,25 @@ public class ItemDetails extends AppCompatActivity {
         tvIniValue = binding.textViewIniPrice;
         tvLastValue = binding.textViewLastPrice;
         tvCurrencyName = binding.textViewCurrencyName;
-        tvTarget = binding.textViewTarget;
         iButtonFav = binding.imageButtonFav;
+        targetPriceLayout = binding.ConstraintLayoutTargetPrice;
+        tvPriceBase = binding.textViewPriceBase;
+        tvChangeToTarget = binding.textViewChangetoTarget;
+        tvTargetPriceDetails = binding.textViewTargetPriceDetails;
+        iVArrowTarget = binding.imageViewArroTarget;
+        Picasso.get().load(iconImage).into(tviconImage);
 
-        Favorites checkifFav = dao.findByName(currencyId);
+        Favorites checkifFav = favoriteDAO.findByName(currencyId);
         if(checkifFav!=null)
             iButtonFav.setImageResource(R.drawable.fill_star);
 
-        tvCurrencyName.setText(currencyId);
+        tvCurrencyName.setText(currencyName);
         String currentValue=localCurrencySymbol+df2.format(currentPrice);
         tvLastValue.setText(currentValue);
 
         setCandleStickChart(currencyId, "1");
+
+        loadTargetPrice();
 
         bDay.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -145,26 +162,31 @@ public class ItemDetails extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Favorites checkIfAlreadyInserted = dao.findByName(currencyId);
+                Favorites checkIfAlreadyInserted = favoriteDAO.findByName(currencyId);
                 if (checkIfAlreadyInserted==null) {
                     checkIfAlreadyInserted = new Favorites(currencyId);
-                    dao.insert(checkIfAlreadyInserted);
+                    favoriteDAO.insert(checkIfAlreadyInserted);
                     Toast.makeText(ItemDetails.this, checkIfAlreadyInserted.getCurrency_id()+" Added to Favorites" , Toast.LENGTH_SHORT).show();
                     iButtonFav.setImageResource(R.drawable.fill_star);
                 }else{
-                    dao.delete(checkIfAlreadyInserted);
+                    favoriteDAO.delete(checkIfAlreadyInserted);
                     Toast.makeText(ItemDetails.this, currencyId+" Removed from Favorites" , Toast.LENGTH_SHORT).show();
                     iButtonFav.setImageResource(R.drawable.empty_star);
                 }
             }
         });
-        tvTarget.setOnClickListener(new View.OnClickListener() {
+        targetPriceLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                Intent intent = new Intent(view.getContext(), ItemTarget.class);
+
+                intent.putExtra("currencyName", currencyName);
+                intent.putExtra("currencyPrice", currentPrice);
+                intent.putExtra("currencyImage", iconImage);
+                view.getContext().startActivity(intent);
             }
         });
-
 
     }
 
@@ -238,9 +260,7 @@ public class ItemDetails extends AppCompatActivity {
                         }
 
                         String currencyname = extras.getString("currencyName");
-                        String iconImage = extras.getString("iconImage");
 
-                        Picasso.get().load(iconImage).into(tviconImage);
                         CandleDataSet candledataset = new CandleDataSet(candlestickentry, currencyname);
 
                         candledataset.setColor(Color.rgb(80,80,80));
@@ -293,7 +313,6 @@ public class ItemDetails extends AppCompatActivity {
                     tvIniValue.setText(currentPrice);
                     loadDifferenceRate(doubleCurrentPrice, days);
 
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -331,8 +350,33 @@ public class ItemDetails extends AppCompatActivity {
             tvchange.setText(formatValue);
         }
 
+
     }
 
+    private void loadTargetPrice(){
+        Target targetObject = targetDAO.findByName(currencyName);
+        if (targetObject!=null) {
+            double basePrice;
+            double porcentage;
+            double targetPrice;
+            targetPrice = targetObject.getTarget_price();
+            basePrice = targetObject.getBase_price();
+            String basePricestring = df2.format(basePrice);
+            String targetPricestring = df2.format(targetPrice);
+            porcentage = (((currentPrice-basePrice)*100/(targetPrice-basePrice)));
+
+            if (porcentage >= 0){
+                iVArrowTarget.setImageResource(R.drawable.greenarrow);
+            }else{
+                iVArrowTarget.setImageResource(R.drawable.redarrowdown);
+            }
+            String porctengaeString = "%"+df2.format(porcentage);
+            tvPriceBase.setText(basePricestring);
+            tvTargetPriceDetails.setText(targetPricestring);
+            tvChangeToTarget.setText(porctengaeString);
+        }
+
+    }
     private static class dateObject {
         //Thu Apr 07 13:30:00 GMT+02:00 2022
         String date;

@@ -47,7 +47,8 @@ public class CurrencyRVAdapter extends RecyclerView.Adapter<CurrencyRVAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull CurrencyRVAdapter.ViewHolder holder, int position) {
         CurrencyRVModal currencyRVModal = currencyRVModalArrayList.get(position);
-        holder.currencyName.setText(currencyRVModal.getName());
+        holder.currencyName = currencyRVModal.getName();
+        holder.currencyNameTV.setText(currencyRVModal.getName());
         holder.symbolTV.setText(currencyRVModal.getSymbol());
         holder.price.setText(localCurrencySymbol+df2.format(currencyRVModal.getPrice()));
         holder.currencyId = currencyRVModal.getId();
@@ -70,14 +71,14 @@ public class CurrencyRVAdapter extends RecyclerView.Adapter<CurrencyRVAdapter.Vi
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        private TextView currencyName, symbolTV, rateTV, price;
+        private TextView currencyNameTV, symbolTV, rateTV, price;
         private ImageView imagen, arrow;
-        private String currencyId, iconImage;
+        private String currencyId, iconImage, currencyName;
         private double changeRate, currentPrice;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            currencyName = itemView.findViewById(R.id.IDTVCurrencyName);
+            currencyNameTV = itemView.findViewById(R.id.IDTVCurrencyName);
             symbolTV = itemView.findViewById(R.id.idTVSymbol);
             price = itemView.findViewById(R.id.IDTVCurrencyPrice);
             imagen = itemView.findViewById(R.id.IDImagenView);
@@ -94,6 +95,7 @@ public class CurrencyRVAdapter extends RecyclerView.Adapter<CurrencyRVAdapter.Vi
                     intent.putExtra("currencyId", currencyId);
                     intent.putExtra("iconImage", iconImage);
                     intent.putExtra("currentPrice", currentPrice);
+                    intent.putExtra("currencyName", currencyName);
                     //intent.putExtra("imagenes", images);
                     context.startActivity(intent);
                 }

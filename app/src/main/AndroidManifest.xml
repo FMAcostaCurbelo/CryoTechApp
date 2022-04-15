@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.femaaccu.cryotechapp">
+    package="com.femaaccu.cryotechapp" >
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -10,13 +10,16 @@
         android:label=""
         android:roundIcon="@mipmap/ic_crypto_app"
         android:supportsRtl="true"
-        android:theme="@style/Theme.CryoTechApp">
+        android:theme="@style/Theme.CryoTechApp" >
+        <activity
+            android:name=".ItemTarget"
+            android:exported="false" />
         <activity
             android:name=".ItemDetails"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
