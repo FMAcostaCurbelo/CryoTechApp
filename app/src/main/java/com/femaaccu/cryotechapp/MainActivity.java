@@ -29,6 +29,8 @@ import com.android.volley.toolbox.Volley;
 import com.femaaccu.cryotechapp.database.AppDataBase;
 import com.femaaccu.cryotechapp.database.FavoriteDAO;
 import com.femaaccu.cryotechapp.database.Favorites;
+import com.femaaccu.cryotechapp.database.Target;
+import com.femaaccu.cryotechapp.database.TargetDAO;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,10 +47,14 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView currenciesRV;
     private ProgressBar loadingPB;
     private ArrayList<CurrencyRVModal> currencyRVModalArrayList;
+    private ArrayList<TargetRVModal> targetRVModalArrayList;
+
     private CurrencyRVAdapter currencyRVAdapter;
+    private TargetRVAdapter targetRVAdapter;
     private boolean sortType;
     AppDataBase db;
-    FavoriteDAO dao;
+    FavoriteDAO favDao;
+    TargetDAO targetDAO;
     Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
         context = this.getApplicationContext();
         db = AppDataBase.getInstance(context);
-        dao = db.favouriteDAO();
+        favDao = db.favouriteDAO();
 
         Toolbar toolbar = findViewById(R.id.mytoolbar);
         setSupportActionBar(toolbar);
@@ -69,8 +75,9 @@ public class MainActivity extends AppCompatActivity {
         loadingPB = findViewById(R.id.IDPBLoading);
 
         currencyRVModalArrayList = new ArrayList<>();
-        currencyRVAdapter = new CurrencyRVAdapter(currencyRVModalArrayList, this);
+        targetRVModalArrayList = new ArrayList<>();
 
+        currencyRVAdapter = new CurrencyRVAdapter(currencyRVModalArrayList, this);
         currenciesRV.setLayoutManager(new LinearLayoutManager(this));
         currenciesRV.setAdapter(currencyRVAdapter);
 
@@ -122,6 +129,8 @@ public class MainActivity extends AppCompatActivity {
             currencyRVAdapter.filterList(currencyRVModalArrayList);
 
         }
+        currenciesRV.setAdapter(currencyRVAdapter);
+        currencyRVAdapter.notifyDataSetChanged();
     }
     private void sortCurrenciesUsingPrice(){
         if(sortType) {
@@ -146,6 +155,8 @@ public class MainActivity extends AppCompatActivity {
             currencyRVAdapter.filterList(currencyRVModalArrayList);
 
         }
+        currenciesRV.setAdapter(currencyRVAdapter);
+        currencyRVAdapter.notifyDataSetChanged();
     }
     private void filterCurrencies(String currency){
         ArrayList<CurrencyRVModal> filteredList = new ArrayList<>();
@@ -162,6 +173,8 @@ public class MainActivity extends AppCompatActivity {
             currencyRVAdapter.filterList(filteredList);
 
         }
+        currenciesRV.setAdapter(currencyRVAdapter);
+        currencyRVAdapter.notifyDataSetChanged();
     }
     private void getCurrencyData(String local_currency){
         loadingPB.setVisibility(View.VISIBLE);
@@ -228,6 +241,8 @@ public class MainActivity extends AppCompatActivity {
             sortCurrenciesUsingPrice();
         }else if (id == R.id.action_favorite){
             sortCurrenciesUsingFavorites();
+        }else if(id == R.id.action_target){
+            makeTargetModalList();
         }
 
         return super.onOptionsItemSelected(item);
@@ -256,7 +271,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void  sortCurrenciesUsingFavorites(){
         ArrayList<CurrencyRVModal> favcurrencyRVModalArrayList = new ArrayList<>();
-        List<Favorites> favoritesList = dao.getAll();
+        favDao = db.favouriteDAO();
+        List<Favorites> favoritesList = favDao.getAll();
         if (favoritesList!=null){
 
             for (CurrencyRVModal item:currencyRVModalArrayList) {
@@ -271,6 +287,34 @@ public class MainActivity extends AppCompatActivity {
         }else{
             Toast.makeText(MainActivity.this, "you don't have Favorites yet, add some!", Toast.LENGTH_LONG).show();
         }
+        currenciesRV.setAdapter(currencyRVAdapter);
+        currencyRVAdapter.notifyDataSetChanged();
+    }
+
+    private void makeTargetModalList(){
+        targetRVModalArrayList = new ArrayList<>();
+        targetRVAdapter = new TargetRVAdapter(targetRVModalArrayList, this);
+        //currenciesRV.setLayoutManager(new LinearLayoutManager(this));
+        currenciesRV.setAdapter(targetRVAdapter);
+
+        targetDAO = db.targetDAO();
+        List<Target> targetList = targetDAO.getAll();
+        for (Target dbitem: targetList) {
+            TargetRVModal itemtoAdd = new TargetRVModal(dbitem.getCurrency_name(), dbitem.getBase_price(), dbitem.getTarget_price());
+            for (CurrencyRVModal itemtoCompare: currencyRVModalArrayList) {
+                if (itemtoCompare.getName().equals(itemtoAdd.getName())){
+                    itemtoAdd.setCurrentPriceTarget(itemtoCompare.getPrice());
+                    itemtoAdd.setCurrencyID(itemtoCompare.getId());
+                    itemtoAdd.setImage(itemtoCompare.getImage());
+                    itemtoAdd.setChangeRate(itemtoCompare.getRate());
+                    double porcentage = (((itemtoCompare.getPrice()-dbitem.getBase_price())*100/(dbitem.getTarget_price()-dbitem.getBase_price())));
+                    itemtoAdd.setProgressrate(porcentage);
+                }
+
+            }
+            targetRVModalArrayList.add(itemtoAdd);
+        }
+        targetRVAdapter.notifyDataSetChanged();
 
     }
 
