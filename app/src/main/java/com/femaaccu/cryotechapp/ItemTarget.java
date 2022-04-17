@@ -97,14 +97,12 @@ public class ItemTarget extends AppCompatActivity {
                     Target checkIfAlreadyInserted = targetDAO.findByName(currencyName);
 
                     if (checkIfAlreadyInserted == null) {
-                        checkIfAlreadyInserted = new Target(currencyName, currentPrice, targetPrice);
+                        checkIfAlreadyInserted = new Target(currencyName, currentPrice/MainActivity.exchange, targetPrice/MainActivity.exchange);
                         targetDAO.insert(checkIfAlreadyInserted);
                         Toast.makeText(ItemTarget.this, checkIfAlreadyInserted.getCurrency_name() + " Added to db", Toast.LENGTH_SHORT).show();
-
                     } else {
                         targetDAO.delete(checkIfAlreadyInserted);
                         Toast.makeText(ItemTarget.this, currencyName + " Removed from db", Toast.LENGTH_SHORT).show();
-
                     }
                 }else{
                     Toast.makeText(ItemTarget.this, "Ingrese un valor TEST", Toast.LENGTH_SHORT).show();

@@ -36,6 +36,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -43,12 +44,13 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private String local_currency;
+    public static double exchange;
     private EditText searchEDT;
     private RecyclerView currenciesRV;
     private ProgressBar loadingPB;
     private ArrayList<CurrencyRVModal> currencyRVModalArrayList;
     private ArrayList<TargetRVModal> targetRVModalArrayList;
-
+    private static DecimalFormat df2 = new DecimalFormat("#.###");
     private CurrencyRVAdapter currencyRVAdapter;
     private TargetRVAdapter targetRVAdapter;
     private boolean sortType;
@@ -83,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
         loadSharedPreferences();
         getCurrencyData(local_currency);
-
+        Toast.makeText(MainActivity.this, "el exchange está en "+exchange, Toast.LENGTH_LONG).show();
         searchEDT.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -194,6 +196,7 @@ public class MainActivity extends AppCompatActivity {
                         String symbol = dataObj.getString("symbol");
                         double rate = dataObj.getDouble("price_change_percentage_24h");
                         double price = dataObj.getDouble("current_price");
+                        if(id.equals("usd-coin")) {MainActivity.setExchange(price);}
                         currencyRVModalArrayList.add(new CurrencyRVModal(name, symbol, price, id, image, rate));
                     }
                     currencyRVAdapter.notifyDataSetChanged();
@@ -300,17 +303,16 @@ public class MainActivity extends AppCompatActivity {
         targetDAO = db.targetDAO();
         List<Target> targetList = targetDAO.getAll();
         for (Target dbitem: targetList) {
-            TargetRVModal itemtoAdd = new TargetRVModal(dbitem.getCurrency_name(), dbitem.getBase_price(), dbitem.getTarget_price());
+            TargetRVModal itemtoAdd = new TargetRVModal(dbitem.getCurrency_name(), dbitem.getBase_price()*MainActivity.exchange, dbitem.getTarget_price()*MainActivity.exchange);
             for (CurrencyRVModal itemtoCompare: currencyRVModalArrayList) {
                 if (itemtoCompare.getName().equals(itemtoAdd.getName())){
                     itemtoAdd.setCurrentPriceTarget(itemtoCompare.getPrice());
                     itemtoAdd.setCurrencyID(itemtoCompare.getId());
                     itemtoAdd.setImage(itemtoCompare.getImage());
                     itemtoAdd.setChangeRate(itemtoCompare.getRate());
-                    double porcentage = (((itemtoCompare.getPrice()-dbitem.getBase_price())*100/(dbitem.getTarget_price()-dbitem.getBase_price())));
+                    double porcentage = (((itemtoAdd.getCurrentPriceTarget()-itemtoAdd.getBasePrice())*100/(itemtoAdd.getTargetPrice()-itemtoAdd.getBasePrice())));
                     itemtoAdd.setProgressrate(porcentage);
                 }
-
             }
             targetRVModalArrayList.add(itemtoAdd);
         }
@@ -318,4 +320,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private static void setExchange(double price){
+
+        exchange=(double)Math.round(price * 100d) / 100d;
+    }
 }
