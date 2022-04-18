@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean sortType;
     AppDataBase db;
     FavoriteDAO favDao;
-    TargetDAO targetDAO;
+    public static TargetDAO targetDAO;
     Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
 
         loadSharedPreferences();
         getCurrencyData(local_currency);
-        Toast.makeText(MainActivity.this, "el exchange está en "+exchange, Toast.LENGTH_LONG).show();
         searchEDT.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -165,7 +164,6 @@ public class MainActivity extends AppCompatActivity {
         for (CurrencyRVModal item: currencyRVModalArrayList){
             String itemName = item.getName().toLowerCase();
             if (itemName.contains(currency.toLowerCase())) {
-
                 filteredList.add(item);
             }
         }
@@ -173,7 +171,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Item not found ", Toast.LENGTH_SHORT);
         }else{
             currencyRVAdapter.filterList(filteredList);
-
         }
         currenciesRV.setAdapter(currencyRVAdapter);
         currencyRVAdapter.notifyDataSetChanged();
@@ -297,7 +294,6 @@ public class MainActivity extends AppCompatActivity {
     private void makeTargetModalList(){
         targetRVModalArrayList = new ArrayList<>();
         targetRVAdapter = new TargetRVAdapter(targetRVModalArrayList, this);
-        //currenciesRV.setLayoutManager(new LinearLayoutManager(this));
         currenciesRV.setAdapter(targetRVAdapter);
 
         targetDAO = db.targetDAO();
@@ -317,6 +313,18 @@ public class MainActivity extends AppCompatActivity {
             targetRVModalArrayList.add(itemtoAdd);
         }
         targetRVAdapter.notifyDataSetChanged();
+
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        currencyRVAdapter = new CurrencyRVAdapter(currencyRVModalArrayList, this);
+        if(!currenciesRV.getAdapter().equals(targetRVAdapter)){
+            super.onBackPressed();
+        }else{
+            currenciesRV.setAdapter(currencyRVAdapter);
+        }
 
     }
 

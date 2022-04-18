@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,7 +55,8 @@ public class ItemDetails extends AppCompatActivity {
     TextView tvchange, tvIniValue, tvLastValue, tvCurrencyName, tvTargetPriceDetails, tvPriceBase, tvChangeToTarget;
     String local_currency, localCurrencySymbol;
     String currencyId, currencyName;
-    ImageView iButtonFav;
+    ImageButton iButtonFav;
+    ImageButton iButtonAddStats;
     AppDataBase db;
     FavoriteDAO favoriteDAO;
     TargetDAO targetDAO;
@@ -106,6 +108,7 @@ public class ItemDetails extends AppCompatActivity {
         tvChangeToTarget = binding.textViewChangetoTarget;
         tvTargetPriceDetails = binding.textViewTargetPriceDetails;
         iVArrowTarget = binding.imageViewArroTarget;
+        iButtonAddStats = binding.imageButtonStats;
         Picasso.get().load(iconImage).into(tviconImage);
 
         Favorites checkifFav = favoriteDAO.findByName(currencyId);
@@ -187,7 +190,18 @@ public class ItemDetails extends AppCompatActivity {
                 view.getContext().startActivity(intent);
             }
         });
+        iButtonAddStats.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), ItemTarget.class);
 
+                intent.putExtra("currencyName", currencyName);
+                intent.putExtra("currencyPrice", currentPrice);
+                intent.putExtra("currencyImage", iconImage);
+                view.getContext().startActivity(intent);
+
+            }
+        });
     }
 
 
@@ -366,8 +380,8 @@ public class ItemDetails extends AppCompatActivity {
             double targetPrice;
             targetPrice = targetObject.getTarget_price()*MainActivity.exchange;
             basePrice = targetObject.getBase_price()*MainActivity.exchange;
-            String basePricestring = df2.format(basePrice);
-            String targetPricestring = df2.format(targetPrice);
+            String basePricestring = localCurrencySymbol+df2.format(basePrice);
+            String targetPricestring = localCurrencySymbol+df2.format(targetPrice);
             porcentage = (((currentPrice-basePrice)*100/(targetPrice-basePrice)));
 
             if (porcentage >= 0){

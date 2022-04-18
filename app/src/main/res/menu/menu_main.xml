@@ -32,7 +32,7 @@
         android:id="@+id/action_target"
         android:orderInCategory="400"
         android:title="favorites"
-        android:icon="@drawable/alerts_icon"
+        android:icon="@drawable/stats_icon"
         app:showAsAction="always" />
 
 </menu>

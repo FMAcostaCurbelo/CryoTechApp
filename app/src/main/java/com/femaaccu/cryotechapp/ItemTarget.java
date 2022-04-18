@@ -99,18 +99,17 @@ public class ItemTarget extends AppCompatActivity {
                     if (checkIfAlreadyInserted == null) {
                         checkIfAlreadyInserted = new Target(currencyName, currentPrice/MainActivity.exchange, targetPrice/MainActivity.exchange);
                         targetDAO.insert(checkIfAlreadyInserted);
-                        Toast.makeText(ItemTarget.this, checkIfAlreadyInserted.getCurrency_name() + " Added to db", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ItemTarget.this, checkIfAlreadyInserted.getCurrency_name() + " Added", Toast.LENGTH_SHORT).show();
                     } else {
                         targetDAO.delete(checkIfAlreadyInserted);
-                        Toast.makeText(ItemTarget.this, currencyName + " Removed from db", Toast.LENGTH_SHORT).show();
+                        targetDAO.insert(checkIfAlreadyInserted);
+                        Toast.makeText(ItemTarget.this,  " Added new crypto alert for "+currencyName , Toast.LENGTH_SHORT).show();
                     }
                 }else{
-                    Toast.makeText(ItemTarget.this, "Ingrese un valor TEST", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ItemTarget.this, " Ingrese un valor ", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
-
     }
     private void loadPreferences(){
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);

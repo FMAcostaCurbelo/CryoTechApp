@@ -45,12 +45,15 @@
             android:id="@+id/IDTVCurrencyBasePriceTarget"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="160dp"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="30dp"
-            android:layout_marginStart="160dp"
             android:padding="3dp"
-            android:text="Bas.pr"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            app:autoSizeMaxTextSize="18sp"
+            app:autoSizeMinTextSize="4sp"
+            app:autoSizeStepGranularity="2sp"
+            app:autoSizeTextType="uniform" />
 
 
         <ImageView
@@ -81,8 +84,12 @@
             android:layout_marginTop="30dp"
             android:layout_toEndOf="@+id/IDTVCurrencyProgressTarget"
             android:padding="3dp"
-            android:text="€tg.p"
-            android:textColor="@color/white" />
+
+            android:textColor="@color/white"
+            app:autoSizeMaxTextSize="18sp"
+            app:autoSizeMinTextSize="4sp"
+            app:autoSizeStepGranularity="2sp"
+            app:autoSizeTextType="uniform"/>
 
         <TextView
             android:id="@+id/IDTVCurrencytargetPriceTargetLabel"
@@ -91,7 +98,7 @@
             android:layout_alignStart="@id/IDTVCurrencyBasePriceTarget"
             android:layout_marginTop="5dp"
             android:padding="3dp"
-            android:text="base_price"
+            android:text="Start Price"
             android:textColor="@color/white"
             android:textSize="10sp" />
 
@@ -102,9 +109,19 @@
             android:layout_alignEnd="@+id/IDTVTargetPrice"
             android:layout_marginTop="5dp"
             android:padding="3dp"
-            android:text="Target price"
+            android:text="Target Price"
             android:textColor="@color/white"
             android:textSize="10sp" />
+        <ImageButton
+            android:id="@+id/IDTVDeleteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/delete_icon"
+            android:background="@color/black_shade3"
+
+            />
 
 
     </RelativeLayout>
