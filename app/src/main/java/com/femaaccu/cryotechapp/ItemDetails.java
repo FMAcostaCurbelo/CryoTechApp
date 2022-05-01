@@ -377,8 +377,8 @@ public class ItemDetails extends AppCompatActivity {
             double basePrice;
             double porcentage;
             double targetPrice;
-            targetPrice = targetObject.getTarget_price()*MainActivity.exchange;
-            basePrice = targetObject.getBase_price()*MainActivity.exchange;
+            targetPrice = targetObject.getTarget_price();
+            basePrice = targetObject.getBase_price();
             String basePricestring = localCurrencySymbol+df2.format(basePrice);
             String targetPricestring = localCurrencySymbol+df2.format(targetPrice);
             porcentage = (((currentPrice-basePrice)*100/(targetPrice-basePrice)));

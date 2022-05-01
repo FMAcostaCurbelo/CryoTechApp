@@ -18,11 +18,15 @@ public class Target {
     @ColumnInfo(name = "target_price")
     double target_price;
 
+    @ColumnInfo(name = "local_currency")
+    String local_currency;
 
-    public Target(String currency_name, double base_price, double target_price ) {
+
+    public Target(String currency_name, double base_price, double target_price, String local_currency ) {
         this.currency_name = currency_name;
         this.base_price = base_price;
         this.target_price = target_price;
+        this.local_currency = local_currency;
 
     }
 
@@ -57,4 +61,8 @@ public class Target {
     public void setTarget_price(double target_price) {
         this.target_price = target_price;
     }
+
+    public String getLocal_currency() { return local_currency; }
+
+    public void setLocal_currency(String local_currency) { this.local_currency = local_currency; }
 }

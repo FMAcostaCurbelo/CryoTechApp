@@ -26,7 +26,7 @@ import java.text.DecimalFormat;
 public class ItemTarget extends AppCompatActivity {
     private ActivityItemTargetBinding binding;
     Bundle extras;
-    String currencyName, currencyImage, localCurrencySymbol;
+    String currencyName, currencyImage, localCurrencySymbol, local_currency;
     double currentPrice;
     TextView currencyNameTV, currencyPriceTV, currencyChangeProcentageTV;
     ImageView currencyIV, arrowIV;
@@ -90,14 +90,14 @@ public class ItemTarget extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String getValue = "";
+                String getValue;
                 getValue = inputTargetPriceET.getText().toString();
                 if (!getValue.equals("")) {
                     double targetPrice = Double.parseDouble(getValue);
                     Target checkIfAlreadyInserted = targetDAO.findByName(currencyName);
 
                     if (checkIfAlreadyInserted == null) {
-                        checkIfAlreadyInserted = new Target(currencyName, currentPrice/MainActivity.exchange, targetPrice/MainActivity.exchange);
+                        checkIfAlreadyInserted = new Target(currencyName, currentPrice, targetPrice, local_currency);
                         targetDAO.insert(checkIfAlreadyInserted);
                         Toast.makeText(ItemTarget.this, checkIfAlreadyInserted.getCurrency_name() + " Added", Toast.LENGTH_SHORT).show();
                     } else {
@@ -113,7 +113,7 @@ public class ItemTarget extends AppCompatActivity {
     }
     private void loadPreferences(){
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        String local_currency = sharedPref.getString("list", "eur");
+        local_currency = sharedPref.getString("list", "eur");
 
         if (local_currency.equals("eur"))localCurrencySymbol="€";
         if (local_currency.equals("usd"))localCurrencySymbol="$";

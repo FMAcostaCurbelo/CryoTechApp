@@ -299,7 +299,7 @@ public class MainActivity extends AppCompatActivity {
         targetDAO = db.targetDAO();
         List<Target> targetList = targetDAO.getAll();
         for (Target dbitem: targetList) {
-            TargetRVModal itemtoAdd = new TargetRVModal(dbitem.getCurrency_name(), dbitem.getBase_price()*MainActivity.exchange, dbitem.getTarget_price()*MainActivity.exchange);
+            TargetRVModal itemtoAdd = new TargetRVModal(dbitem.getCurrency_name(), dbitem.getBase_price(), dbitem.getTarget_price());
             for (CurrencyRVModal itemtoCompare: currencyRVModalArrayList) {
                 if (itemtoCompare.getName().equals(itemtoAdd.getName())){
                     itemtoAdd.setCurrentPriceTarget(itemtoCompare.getPrice());

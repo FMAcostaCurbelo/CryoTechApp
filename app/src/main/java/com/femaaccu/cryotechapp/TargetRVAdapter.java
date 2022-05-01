@@ -48,11 +48,6 @@ public class TargetRVAdapter extends RecyclerView.Adapter<TargetRVAdapter.ViewHo
         this.context = context;
 
     }
-    public void filterList(ArrayList<TargetRVModal> filteredList){
-        this.targetRVModalArrayList = filteredList;
-        notifyDataSetChanged();
-
-    }
     @Override
     public void onBindViewHolder(@NonNull TargetRVAdapter.ViewHolder holder, int position) {
         TargetRVModal targetRVModal = targetRVModalArrayList.get(position);
@@ -62,7 +57,6 @@ public class TargetRVAdapter extends RecyclerView.Adapter<TargetRVAdapter.ViewHo
         holder.changeRate = targetRVModal.getChangeRate();
         holder.currencyId = targetRVModal.getCurrencyID();
         holder.currentPrice = targetRVModal.getCurrentPriceTarget();
-        //holder.getAdapterPosition();
         holder.currentprice.setText(localCurrencySymbol+df2.format(targetRVModal.getCurrentPriceTarget()));
         holder.name.setText(targetRVModal.getName());
         holder.basePrice.setText(localCurrencySymbol+df2.format(targetRVModal.getBasePrice()));
