@@ -293,7 +293,7 @@ public class ItemDetails extends AppCompatActivity {
                         XAxis xval = candlechart.getXAxis();
                         xval.setPosition(XAxis.XAxisPosition.BOTTOM);
                         xval.setDrawGridLines(false);
-
+                       candlechart.setDescription("");
                     }
                 },
                 new Response.ErrorListener()
@@ -308,7 +308,7 @@ public class ItemDetails extends AppCompatActivity {
             queue.add(getRequest);
     }
     private void InitValue(String coin, dateObject dateobj, String days){
-        //30-12-2017
+
         String date = dateobj.dayNumber+"-"+dateobj.getMonthNumber()+"-"+dateobj.year;
         String url = "https://api.coingecko.com/api/v3/coins/"+coin+"/history?date="+date+"&localization=false";
 

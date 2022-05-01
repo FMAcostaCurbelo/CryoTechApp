@@ -21,11 +21,11 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="-80dp"
-            android:background="@color/black_shade_1"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="224dp"
             android:layout_marginBottom="9dp"
-            android:layout_toEndOf="@+id/IDTVCurrencyName" />
+            android:layout_toEndOf="@+id/IDTVCurrencyName"
+            android:background="@color/black_shade_1" />
 
         <TextView
             android:id="@+id/idTVSymbol"
@@ -83,16 +83,12 @@
 
         <ImageView
             android:id="@+id/IDarrowImage"
-            android:layout_width="wrap_content"
+            android:layout_width="15dp"
             android:layout_height="15dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
+            android:layout_marginRight="15dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="301dp"
-            android:layout_marginTop="45dp"
-            android:layout_marginEnd="64dp"
-            android:layout_marginBottom="11dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toLeftOf="@+id/IDCurrencyRate"
             android:scaleType="fitXY" />
 
 
