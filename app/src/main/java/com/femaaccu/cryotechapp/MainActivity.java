@@ -45,12 +45,11 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private String local_currency;
     public static double exchange;
-    private EditText searchEDT;
     private RecyclerView currenciesRV;
     private ProgressBar loadingPB;
     private ArrayList<CurrencyRVModal> currencyRVModalArrayList;
     private ArrayList<TargetRVModal> targetRVModalArrayList;
-    private static DecimalFormat df2 = new DecimalFormat("#.###");
+    private static final DecimalFormat df2 = new DecimalFormat("#.###");
     private CurrencyRVAdapter currencyRVAdapter;
     private TargetRVAdapter targetRVAdapter;
     private boolean sortType;
@@ -72,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.mytoolbar);
         setSupportActionBar(toolbar);
 
-        searchEDT = findViewById(R.id.IDEdtSearch);
+        EditText searchEDT = findViewById(R.id.IDEdtSearch);
         currenciesRV= findViewById(R.id.IDRCurrencies);
         loadingPB = findViewById(R.id.IDPBLoading);
 
@@ -109,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
     }
     private void sortCurrenciesUsingRate(){
         if(sortType) {
-            Collections.sort(currencyRVModalArrayList, new Comparator<CurrencyRVModal>() {
+            currencyRVModalArrayList.sort(new Comparator<CurrencyRVModal>() {
                 public int compare(CurrencyRVModal e1, CurrencyRVModal e2) {
                     return Double.compare(e2.getRate(), e1.getRate());
                 }
