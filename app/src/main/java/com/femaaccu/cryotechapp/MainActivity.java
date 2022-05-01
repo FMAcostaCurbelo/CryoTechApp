@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                         double price = USD.getDouble("price");
                         currencyRVModalArrayList.add(new CurrencyRVModal(name, symbol, price));
                     }
-                    currencyRVAdapter.notifyDataSetChanged();
+                    currencyRVAdapter.notifyDataSetChanged() ;
                 }
                 catch(JSONException e){
                         e.printStackTrace();
