@@ -7,22 +7,27 @@
     android:background="@color/black_shade_1"
     tools:context=".MainActivity">
 
+    <include
+        android:id="@+id/mytoolbar"
+        layout="@layout/toolbar_main"
+
+        />
     <EditText
+        android:id="@+id/IDEdtSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/IDEdtSearch"
         android:layout_margin="5dp"
-        android:hint="Crypto Currency search"
+        android:layout_below="@id/mytoolbar"
+        android:hint="@string/search"
         android:textColor="@color/white"
-        android:textColorHint="@color/white"
-        />
+        android:textColorHint="@color/white" />
+
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/IDRCurrencies"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/IDEdtSearch"
-        android:id="@+id/IDRCurrencies"
-        />
+        android:layout_below="@+id/IDEdtSearch" />
 
     <ProgressBar
         android:layout_width="wrap_content"

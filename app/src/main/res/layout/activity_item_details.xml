@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ItemDetails">
+
+    <TextView
+        android:id="@+id/textViewLastPrice"
+        android:layout_width="103dp"
+        android:layout_height="38dp"
+        android:gravity="end"
+        app:autoSizeMaxTextSize="20sp"
+        app:autoSizeMinTextSize="2sp"
+        app:autoSizeStepGranularity="2sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="@+id/idTextViewChange"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/idTextViewChange"
+        app:layout_constraintTop_toTopOf="@+id/idTextViewChange" />
+
+    <com.github.mikephil.charting.charts.CandleStickChart
+        android:id="@+id/candlechart"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.148">
+
+    </com.github.mikephil.charting.charts.CandleStickChart>
+
+    <Button
+        android:id="@+id/buttonChartDay"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="59dp"
+        android:layout_marginBottom="120dp"
+        android:backgroundTint="@color/black_shade_2"
+        android:text="1D"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonChartWeek"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/candlechart"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <Button
+        android:id="@+id/buttonChartWeek"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:backgroundTint="@color/black_shade_2"
+        android:text="1W"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonChartDay"
+        app:layout_constraintEnd_toStartOf="@+id/buttonChartMonth"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/buttonChartDay"
+        app:layout_constraintTop_toTopOf="@+id/buttonChartDay"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <Button
+        android:id="@+id/buttonChartMonth"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:backgroundTint="@color/black_shade_2"
+        android:text="1M"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonChartWeek"
+        app:layout_constraintEnd_toStartOf="@+id/buttonChartYear"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/buttonChartWeek"
+        app:layout_constraintTop_toTopOf="@+id/buttonChartWeek"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <Button
+        android:id="@+id/buttonChartYear"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:backgroundTint="@color/black_shade_2"
+        android:text="1Y"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonChartMonth"
+        app:layout_constraintEnd_toStartOf="@+id/buttonChartMax"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/buttonChartMonth"
+        app:layout_constraintTop_toTopOf="@+id/buttonChartMonth"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <Button
+        android:id="@+id/buttonChartMax"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:backgroundTint="@color/black_shade_2"
+        android:text="Mx"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonChartYear"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/buttonChartYear"
+        app:layout_constraintTop_toTopOf="@+id/buttonChartYear"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <ImageView
+        android:id="@+id/IDDetailArrow"
+        android:layout_width="47dp"
+        android:layout_height="37dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewIniPrice"
+        app:layout_constraintEnd_toStartOf="@+id/idTextViewChange"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/textViewIniPrice"
+        app:layout_constraintTop_toTopOf="@+id/textViewIniPrice" />
+
+    <TextView
+        android:id="@+id/idTextViewChange"
+        android:layout_width="79dp"
+        android:layout_height="44dp"
+        app:autoSizeMaxTextSize="28sp"
+        app:autoSizeMinTextSize="2sp"
+        app:autoSizeStepGranularity="2sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="@+id/IDDetailArrow"
+        app:layout_constraintEnd_toStartOf="@+id/textViewLastPrice"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/IDDetailArrow"
+        app:layout_constraintTop_toTopOf="@+id/IDDetailArrow" />
+
+    <ImageView
+        android:id="@+id/TViconImage"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginBottom="44dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.907"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonChartMax" />
+
+    <TextView
+        android:id="@+id/textViewIniPrice"
+        android:layout_width="103dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="6dp"
+        app:autoSizeMaxTextSize="20sp"
+        app:autoSizeMinTextSize="2sp"
+        app:autoSizeStepGranularity="2sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@+id/buttonChartDay"
+        app:layout_constraintEnd_toStartOf="@+id/IDDetailArrow"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/candlechart" />
+
+    <TextView
+        android:id="@+id/textViewCurrencyName"
+        android:layout_width="97dp"
+        android:layout_height="22dp"
+        android:layout_marginTop="6dp"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.949"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TViconImage"
+        app:layout_constraintVertical_bias="0.238" />
+
+    <RelativeLayout
+        android:id="@+id/layout_menu"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/black_shade3"
+        app:layout_constraintBottom_toTopOf="@+id/candlechart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/imageButtonFav"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:background="@color/black_shade3"
+            android:contentDescription="favorite Button"
+            android:paddingEnd="30dp"
+            app:srcCompat="@drawable/empty_star" />
+
+        <ImageButton
+            android:id="@+id/imageButtonStats"
+            android:layout_width="45dp"
+            android:layout_height="match_parent"
+            android:layout_alignStart="@id/imageButtonFav"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="40dp"
+            android:background="@color/black_shade3"
+            android:contentDescription="Stats Button"
+            app:srcCompat="@drawable/alerts_icon" />
+    </RelativeLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ConstraintLayoutTargetPrice"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="24dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/TViconImage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonChartDay">
+
+        <TextView
+            android:id="@+id/textViewPriceLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Base price"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewTargetPriceDetailLabel"
+            app:layout_constraintEnd_toStartOf="@+id/imageViewArroTarget"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textViewTargetPriceDetailLabel"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/textViewPriceBase"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/textViewPriceLabel"
+            app:layout_constraintHorizontal_bias="0.53"
+            app:layout_constraintStart_toStartOf="@+id/textViewPriceLabel" />
+
+        <TextView
+            android:id="@+id/textViewChangetoTarget"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/imageViewArroTarget"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.504" />
+
+        <TextView
+            android:id="@+id/textViewTargetPriceDetailLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Target price"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textViewChangetoTarget"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.158" />
+
+        <TextView
+            android:id="@+id/textViewTargetPriceDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/textViewTargetPriceDetailLabel"
+            app:layout_constraintHorizontal_bias="0.506"
+            app:layout_constraintStart_toStartOf="@+id/textViewTargetPriceDetailLabel" />
+
+        <ImageView
+            android:id="@+id/imageViewArroTarget"
+            android:layout_width="37dp"
+            android:layout_height="25dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.323"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
