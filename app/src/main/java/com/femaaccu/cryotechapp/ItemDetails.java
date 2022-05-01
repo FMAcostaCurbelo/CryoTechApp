@@ -226,7 +226,6 @@ public class ItemDetails extends AppCompatActivity {
                                 String epochTime = array.getString(0);
                                 Date time = new Date(Long.parseLong(epochTime));
                                 dateObject realTime= new dateObject(time.toString());
-                                //Toast.makeText(ItemDetails.this, "el tiempo en string es  "+tiempo, Toast.LENGTH_LONG).show();
 
                                 if (i==0){
                                     InitValue(currencyID, realTime, days);

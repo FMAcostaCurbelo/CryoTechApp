@@ -21,6 +21,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="-80dp"
+            android:background="@color/black_shade_1"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="224dp"
             android:layout_marginBottom="9dp"
